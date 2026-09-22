@@ -1,0 +1,9 @@
+{
+  "name":"Forge Studios Gestão",
+  "short_name":"Forge Gestão",
+  "start_url":"./index.html",
+  "display":"standalone",
+  "background_color":"#07111f",
+  "theme_color":"#087ff0",
+  "lang":"pt-BR"
+}

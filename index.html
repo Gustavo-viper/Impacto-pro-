@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
+<title>Forge Studios — Gestão</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login" class="login">
+  <div class="login-card">
+    <div class="brand-mark">F</div>
+    <h1>Forge Studios</h1>
+    <p>Orçamentos • Estoque • Locações</p>
+    <input id="user" placeholder="Usuário" value="admin">
+    <input id="pass" type="password" placeholder="Senha" value="1234">
+    <button onclick="login()">Entrar</button>
+    <small>Protótipo: admin / 1234</small>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+<header>
+  <div>
+    <strong>FORGE <span>STUDIOS</span></strong>
+    <small>GESTÃO OFFLINE + ONLINE</small>
+  </div>
+  <div class="status"><span id="dot"></span><span id="connection">Offline</span></div>
+</header>
+
+<nav>
+  <button onclick="show('dashboard')">📊 Dashboard</button>
+  <button onclick="show('orcamentos')">🧾 Orçamentos</button>
+  <button onclick="show('estoque')">📦 Estoque</button>
+  <button onclick="show('alugados')">🏗️ Equipamentos Alugados</button>
+</nav>
+
+<main>
+<section id="dashboard" class="page">
+  <h2>Dashboard</h2>
+  <div class="cards">
+    <div class="card"><b id="countProducts">0</b><span>Itens em estoque</span></div>
+    <div class="card"><b id="countRentals">0</b><span>Equipamentos alugados</span></div>
+    <div class="card"><b id="countQuotes">0</b><span>Orçamentos</span></div>
+  </div>
+  <div class="panel">
+    <h3>Status do aplicativo</h3>
+    <p>Os dados deste protótipo são gravados localmente no dispositivo. A estrutura está preparada para receber sincronização com um servidor quando houver internet.</p>
+  </div>
+</section>
+
+<section id="estoque" class="page hidden">
+  <div class="title-row"><h2>Controle de Estoque</h2><button onclick="addProduct()">+ Novo item</button></div>
+  <div id="products" class="list"></div>
+</section>
+
+<section id="alugados" class="page hidden">
+  <div class="title-row"><h2>Equipamentos Alugados</h2><button onclick="addRental()">+ Nova locação</button></div>
+  <div id="rentals" class="list"></div>
+</section>
+
+<section id="orcamentos" class="page hidden">
+  <div class="title-row"><h2>Novo Orçamento</h2><button onclick="newQuote()">+ Novo orçamento</button></div>
+  <div class="panel">
+    <label>Cliente <input id="quoteClient" placeholder="Nome do cliente"></label>
+    <h3>Itens</h3>
+    <div id="quoteItems"></div>
+    <div class="total">Valor final: <input id="quoteTotal" type="number" step="0.01" value="0"></div>
+    <button onclick="saveQuote()">Salvar orçamento</button>
+    <button class="secondary" onclick="generatePDF()">Gerar impressão/PDF</button>
+  </div>
+  <div id="quotes" class="list"></div>
+</section>
+</main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
