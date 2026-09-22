@@ -1,31 +1,34 @@
-# Forge Studios — Protótipo de Gestão
+# Impacto Pro Orçamentos — atualização
 
-Protótipo funcional de um aplicativo de gestão com:
+## Identidade
+- A primeira imagem fornecida foi configurada como ícone do aplicativo.
+- A segunda imagem foi configurada como logo interna.
+- A segunda imagem também é usada como marca d'água no PDF.
+
+## Nome do aplicativo
+Impacto Pro Orçamentos
+
+## Recursos
 - Orçamentos
+- Seleção individual de itens
+- Valores editáveis por orçamento
 - Estoque
 - Equipamentos alugados
-- Geração por impressão/PDF
-- Login de administrador
-- Funcionamento offline via localStorage
+- Devoluções
+- Histórico
+- PDF/impressão
+- Backup/restauração
+- PWA e funcionamento offline
 
-## Testar
-Abra `index.html` no navegador.
+## Login inicial
+Usuário: admin
+Senha: 1234
 
-Login do protótipo:
-- usuário: `admin`
-- senha: `1234`
+## Render
+Static Site
+Build Command: vazio
+Publish Directory: .
 
-## Online + Offline
-Esta versão já armazena os dados localmente e continua funcionando sem internet.
-A parte de sincronização online ainda é uma etapa posterior: ela deverá usar uma API/banco remoto para sincronizar os dados quando houver conexão.
-
-## Próxima etapa recomendada
-Transformar este protótipo em aplicativo instalável para Android, Windows e macOS usando uma camada multiplataforma e adicionar:
-- banco SQLite local;
-- autenticação real;
-- sincronização online;
-- permissões CEO/Programador;
-- PDF nativo;
-- backup e restauração;
-- atualização do estoque ao usar itens em orçamentos;
-- controle completo de locações.
+## Observação
+O PDF abre a janela de impressão do navegador. Escolha "Salvar como PDF".
+A sincronização online entre dispositivos continua sendo uma etapa de backend.

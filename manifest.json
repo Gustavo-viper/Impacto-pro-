@@ -1,0 +1,18 @@
+{
+  "name": "Impacto Pro Orçamentos",
+  "short_name": "Impacto Pro",
+  "description": "Sistema de orçamentos, controle de estoque e equipamentos alugados",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/impacto-pro-app-icon.jpeg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
