@@ -1,0 +1,43 @@
+*{box-sizing:border-box}body{margin:0;background:#070b10;color:#edf5ff;font:14px Arial,sans-serif}button,input,select,textarea{font:inherit}
+button{border:0;border-radius:9px;padding:10px 14px;cursor:pointer;background:#078fd0;color:#fff;font-weight:700}.hidden{display:none!important}
+#login{min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle,#173a50,#05080d 70%)}
+.loginbox{width:min(420px,92%);background:#0b141e;border:1px solid #244b63;border-radius:20px;padding:30px;text-align:center}
+.loginlogo{width:86%;max-height:105px;object-fit:contain;background:#000;border-radius:8px;padding:5px}
+.loginbox input{display:block;width:100%;padding:12px;margin:9px 0;background:#050b11;border:1px solid #29455a;color:#fff;border-radius:8px}.loginbox button{width:100%}.loginbox small{display:block;color:#7792a8;margin-top:12px}
+aside{position:fixed;left:0;top:0;bottom:0;width:245px;background:#080f17;border-right:1px solid #173147;padding:18px;display:flex;flex-direction:column}
+.sidelogo{width:100%;height:68px;object-fit:contain;background:#000;border-radius:7px;padding:5px;margin-bottom:22px}nav{display:grid;gap:8px}
+nav button{background:#0c1b29;color:#d6e7f2;text-align:left;font-size:14px;border:1px solid #173147}.logout{margin-top:auto;background:#172431}
+main{margin-left:245px;min-height:100vh}header{height:78px;padding:16px 25px;border-bottom:1px solid #173147;background:#080e15;display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:21px;margin:0 0 4px}header span{color:#6f899f;font-size:12px}#net{font-size:12px;color:#ffbd39}
+section{padding:24px;max-width:1350px}.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:12px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel,.tablebox{background:#0b1723;border:1px solid #173a52;border-radius:14px;padding:18px}
+.card b{display:block;color:#0bb7f0;font-size:27px}.muted{color:#7892a8}.table{width:100%;border-collapse:collapse}
+.table th,.table td{padding:11px;border-bottom:1px solid #193348;text-align:left}.table th{color:#7892a8;font-size:11px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}.danger{background:#a52e40}.ghost{background:#15283a}.small{padding:7px 10px;font-size:12px}
+.modal{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:18px;z-index:9}.modalbox{width:min(820px,100%);max-height:92vh;overflow:auto;background:#0b1723;border:1px solid #23506b;border-radius:16px;padding:20px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field label{display:block;color:#8ca6ba;font-size:12px}.field input,.field textarea,.field select{width:100%;padding:11px;margin-top:5px;background:#050b11;border:1px solid #24455c;color:#fff;border-radius:8px}.field textarea{min-height:90px}.full{grid-column:1/-1}
+.qline{display:grid;grid-template-columns:28px 1fr 90px 125px 30px;gap:7px;align-items:center;margin:7px 0}.qline input{width:100%;padding:9px;background:#050b11;border:1px solid #24455c;color:#fff;border-radius:7px}
+.qitems{border:1px solid #173a52;border-radius:10px;padding:9px;margin-top:10px}.finalbox{margin-top:16px;padding:15px;border:1px solid #0bb7f0;border-radius:11px;background:#071a26}
+.finalbox label{display:block;color:#7fa5bc;font-size:12px;font-weight:700}.finalbox input{width:100%;font-size:25px;font-weight:800;padding:12px;margin-top:7px;background:#02070b;border:1px solid #0bb7f0;color:#fff;border-radius:9px}
+.empty{text-align:center;color:#7892a8;padding:30px}@media(max-width:800px){aside{width:100%;height:auto;bottom:auto;position:relative;padding:10px}.sidelogo{height:55px;margin-bottom:10px}nav{grid-template-columns:repeat(2,1fr)}
+nav button{text-align:center}main{margin-left:0}header{position:sticky;top:0;z-index:4}.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.qline{grid-template-columns:24px 1fr 65px 80px 25px}.tablebox{overflow-x:auto}.table{min-width:700px}}
+.header-actions{display:flex;align-items:center;gap:12px}.downloadbtn{background:#0b9bd7;white-space:nowrap}
+.status{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700}
+.status.disponivel{background:#123f2a;color:#6ff0aa}.status.alugado{background:#473914;color:#ffd66b}.status.manutencao{background:#49212a;color:#ff8999}
+.download-options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}.download-card{padding:16px;border:1px solid #23465d;border-radius:12px;background:#08131d}.download-card h4{margin:0 0 8px}.download-card button{width:100%}
+@media(max-width:800px){.header-actions{gap:6px}.downloadbtn{font-size:11px;padding:8px}.download-options{grid-template-columns:1fr}}
+
+:root{--bg:#060b12;--panel:#0c1723;--line:#1d3c52;--accent:#18b8ee;--text:#edf7ff;--muted:#7f9ab0}
+body{background:radial-gradient(900px 500px at 70% -10%,#12344a55,transparent 65%),#060b12}
+aside{background:linear-gradient(180deg,#08131e,#060b12);box-shadow:12px 0 40px #0005}
+nav button{transition:.18s}nav button:hover{background:#0f3044;border-color:#1a88b8;transform:translateX(2px)}
+header{background:linear-gradient(180deg,#0a141f,#080e15);box-shadow:0 5px 25px #0005}
+.card,.panel,.tablebox{box-shadow:0 10px 35px #0003}.card{background:linear-gradient(145deg,#0d1b29,#09131e)}
+.card b{background:linear-gradient(90deg,#18b8ee,#8b6cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.modalbox{background:linear-gradient(145deg,#0d1a27,#071019);box-shadow:0 25px 80px #0009}
+.downloadbtn{background:linear-gradient(135deg,#18b8ee,#6257ed)}
+.header-actions{display:flex;align-items:center;gap:12px}
+.status{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700}
+.status.disponivel{background:#123f2a;color:#6ff0aa}.status.alugado{background:#473914;color:#ffd66b}.status.manutencao{background:#49212a;color:#ff8999}
+.download-options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.download-card{padding:16px;border:1px solid #23465d;border-radius:12px;background:#08131d}.download-card button{width:100%}
+@media(max-width:800px){.header-actions{gap:6px}.downloadbtn{font-size:11px;padding:8px}.download-options{grid-template-columns:1fr}}
