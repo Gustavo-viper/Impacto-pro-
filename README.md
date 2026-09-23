@@ -11,3 +11,28 @@
 
 ## V20 — Atualização automática
 O app instalado verifica novas versões no servidor, atualiza o Service Worker e mostra a mensagem de atualização. O usuário não precisa baixar/reinstalar o app a cada alteração.
+
+
+## V21
+- Equipamentos alugados: locado para + condição de retorno.
+- Estoque agrupado por setor/categoria.
+- Orçamento agrupado por setor, refletido também no PDF.
+- Botão Enviar PDF no preview com chamada robusta para compartilhamento.
+
+
+## V22
+- Marca d'água agora ocupa 100% da folha A4 na visualização e impressão.
+- Atualização automática usa versão persistente do aplicativo para mostrar a notificação após uma nova versão ser instalada.
+
+
+## V23 — Opcionais com valores e setores
+- Equipamentos agrupados por setor, com o setor aparecendo uma única vez no orçamento/PDF.
+- Cada opcional mostra quantidade, nome e valor unitário.
+- Configuração para mostrar ou ocultar o total dos opcionais no PDF.
+- Quando ativado, o PDF mostra o valor unitário de cada opcional e o total dos opcionais separadamente.
+- O total dos opcionais nunca é somado ao valor total principal.
+- Configuração global disponível na aba Configurações e ajuste individual dentro de cada orçamento.
+
+
+## V24 — Logo do cabeçalho do PDF
+A logo do cabeçalho do PDF usa a versão transparente, eliminando a tarja preta. A marca d'água A4 de página inteira permanece independente.
