@@ -160,31 +160,51 @@ function ensureStockChecklist(){
     else c.task=p.name;
   });
 }
+
 function syncQuoteChecklist(q){
   db.checklist ||= [];
   const old=db.checklist.filter(c=>c.source==="quote"&&Number(c.quoteId)===Number(q.id));
-  const oldDone=new Map(old.map(c=>[Number(c.productId),Boolean(c.done)]));
+  // Preserve the check marks by product + unit number when an existing quote is edited.
+  const oldDone=new Map(old.map(c=>[`${Number(c.productId)}:${Number(c.unitIndex||1)}`,Boolean(c.done)]));
   db.checklist=db.checklist.filter(c=>!(c.source==="quote"&&Number(c.quoteId)===Number(q.id)));
   const local=q.eventLocal||"Local não informado";
   const city=q.eventCity||"";
-  (q.items||[]).forEach((item,i)=>{
-    const qty=Number(item.qty||1);
-    db.checklist.push({
-      id:Date.now()+i+Number(q.id)%100000,
-      source:"quote",
-      quoteId:Number(q.id),
-      productId:Number(item.productId),
-      task:`${qty}x ${item.name} — ${local}`,
-      category:"Carregamento",
-      responsible:"",
-      dueDate:q.eventDate||"",
-      notes:`Evento: ${q.eventName||"—"}${city?` • Cidade: ${city}`:""}${q.eventTime?` • Horário: ${q.eventTime}`:""}`,
-      done:oldDone.get(Number(item.productId))||false
-    });
+  let seq=0;
+  (q.items||[]).forEach(item=>{
+    const qty=Math.max(1,Number(item.qty||1));
+    for(let unit=1;unit<=qty;unit++){
+      const key=`${Number(item.productId)}:${unit}`;
+      db.checklist.push({
+        id:Date.now()+seq++ + Number(q.id)%100000,
+        source:"quote",
+        quoteId:Number(q.id),
+        productId:Number(item.productId),
+        unitIndex:unit,
+        unitTotal:qty,
+        task:`${item.name} — ${local}`,
+        category:"Carregamento",
+        responsible:"",
+        dueDate:q.eventDate||"",
+        notes:`Unidade ${unit}/${qty} • Evento: ${q.eventName||"—"}${city?` • Cidade: ${city}`:""}${q.eventTime?` • Horário: ${q.eventTime}`:""}`,
+        done:oldDone.get(key)||false
+      });
+    }
   });
 }
+
+function ensureQuoteChecklists(){
+  db.checklist ||= [];
+  // Important: migrate/open existing budgets too, not only newly created ones.
+  (db.quotes||[]).forEach(q=>{
+    const has=db.checklist.some(c=>c.source==="quote"&&Number(c.quoteId)===Number(q.id));
+    if(!has && (q.items||[]).length) syncQuoteChecklist(q);
+  });
+}
+
 function checklist(){
   ensureStockChecklist();
+  ensureQuoteChecklists();
+  save();
   const quoteIds=[...new Set(db.checklist.filter(c=>c.source==="quote").map(c=>Number(c.quoteId)))];
   const quoteBlocks=quoteIds.map(qid=>{
     const q=db.quotes.find(x=>Number(x.id)===qid);
@@ -192,19 +212,19 @@ function checklist(){
     const items=db.checklist.filter(c=>c.source==="quote"&&Number(c.quoteId)===qid);
     if(!items.length)return "";
     const rows=items.map(c=>`<tr class="check-row ${c.done?"checked-row":""}"><td class="check-cell"><input class="check-big" type="checkbox" ${c.done?"checked":""} onchange="toggleChecklist(${c.id})"></td><td><b class="check-item-name ${c.done?"done-text":""}">${esc(c.task)}</b><br><span class="muted">${esc(c.notes||"")}</span></td><td>${esc(c.dueDate||"—")}</td></tr>`).join("");
-    return `<div class="panel checklist-event"><div class="checklist-event-head"><div><span class="eyebrow">CARREGAMENTO</span><h3>${esc(q.eventName||"Orçamento "+q.number)}</h3><p class="muted">Local: <b>${esc(q.eventLocal||"Não informado")}</b>${q.eventCity?` • ${esc(q.eventCity)}`:""}</p></div><span class="check-count">${items.filter(x=>x.done).length}/${items.length} OK</span></div><div class="tablebox"><table class="table checklist-table"><tr><th>OK</th><th>Equipamento / Local</th><th>Data</th></tr>${rows}</table></div></div>`;
+    return `<div class="panel checklist-event"><div class="checklist-event-head"><div><span class="eyebrow">CARREGAMENTO DA VAN</span><h3>${esc(q.eventName||"Orçamento "+q.number)}</h3><p class="muted">Local do evento: <b>${esc(q.eventLocal||"Não informado")}</b>${q.eventCity?` • ${esc(q.eventCity)}`:""}</p></div><span class="check-count">${items.filter(x=>x.done).length}/${items.length} OK</span></div><div class="tablebox"><table class="table checklist-table"><tr><th>OK</th><th>Equipamento / Local</th><th>Data</th></tr>${rows}</table></div></div>`;
   }).join("");
   const stockRows=db.products.map(p=>{
     const c=db.checklist.find(x=>x.source==="stock"&&Number(x.productId)===Number(p.id));
-    return `<tr class="check-row ${c?.done?"checked-row":""}"><td class="check-cell"><input class="check-big" type="checkbox" ${c?.done?"checked":""} onchange="toggleChecklist(${c?.id})"></td><td><b class="check-item-name ${c?.done?"done-text":""}">${esc(p.name)}</b><br><span class="muted">Estoque: ${Number(p.qty||0)} unidade(s) • ${esc(p.category||"Geral")}</span></td><td>${Number(p.qty||0)}</td></tr>`;
+    return `<tr class="check-row ${c?.done?"checked-row":""}"><td class="check-cell"><input class="check-big" type="checkbox" ${c?.done?"checked":""} onchange="toggleChecklist(${c?.id})"></td><td><b class="check-item-name ${c?.done?"done-text":""}">${esc(p.name)}</b><br><span class="muted">Categoria: ${esc(p.category||"Geral")}</span></td><td>${Number(p.qty||0)}</td></tr>`;
   }).join("");
   const manual=db.checklist.filter(c=>!c.source).map(c=>`<tr><td class="check-cell"><input class="check-big" type="checkbox" ${c.done?"checked":""} onchange="toggleChecklist(${c.id})"></td><td><b class="${c.done?"done-text":""}">${esc(c.task)}</b><br><span class="muted">${esc(c.category||"Geral")} • ${esc(c.responsible||"Sem responsável")}</span></td><td>${esc(c.dueDate||"—")}</td><td><button class="ghost small" onclick="checklistModal(${c.id})">Editar</button> <button class="danger small" onclick="delChecklist(${c.id})">Excluir</button></td></tr>`).join("");
   const qBlock=qBlocksFallback(quoteBlocks);
   const manualBlock=manual?`<div class="panel"><h3>Tarefas manuais</h3><div class="tablebox"><table class="table"><tr><th>OK</th><th>Tarefa</th><th>Prazo</th><th>Ações</th></tr>${manual}</table></div></div>`:"";
-  const stockBlock=`<div class="panel"><div class="bar"><div><h3>Estoque — conferência geral</h3><span class="muted">Tudo que está cadastrado no estoque aparece aqui.</span></div></div><div class="tablebox"><table class="table checklist-table"><tr><th>OK</th><th>Equipamento</th><th>Qtd.</th></tr>${stockRows||'<tr><td colspan="3" class="empty">Nenhum item no estoque.</td></tr>'}</table></div></div>`;
-  $("#content").innerHTML=`<div class="bar"><div><h2>Checklist</h2><span class="muted">Marque cada equipamento conforme ele for carregado na van.</span></div><button onclick="checklistModal()">+ Nova tarefa</button></div>${qBlock}${stockBlock}${manualBlock}`;
+  const stockBlock=`<div class="panel"><div class="bar"><div><h3>Todos os equipamentos do estoque</h3><span class="muted">Todo equipamento cadastrado aparece automaticamente. Use o OK para conferir o item.</span></div></div><div class="tablebox"><table class="table checklist-table"><tr><th>OK</th><th>Equipamento</th><th>Qtd.</th></tr>${stockRows||'<tr><td colspan="3" class="empty">Nenhum item no estoque.</td></tr>'}</table></div></div>`;
+  $("#content").innerHTML=`<div class="bar"><div><h2>Checklist de carregamento</h2><span class="muted">Os equipamentos selecionados nos orçamentos aparecem separados por evento e local. Marque OK a cada unidade colocada na van.</span></div><button onclick="checklistModal()">+ Nova tarefa</button></div>${qBlock}${stockBlock}${manualBlock}`;
 }
-function qBlocksFallback(html){return html||`<div class="panel empty">Nenhum orçamento com equipamentos selecionados ainda. Ao salvar um orçamento, os itens escolhidos aparecerão aqui automaticamente com o local do evento.</div>`}
+
 function checklistModal(id){let c=db.checklist.find(x=>x.id===id)||{task:"",category:"Geral",responsible:"",dueDate:"",notes:"",done:false,source:"manual"};modal(`<h3>${id?"Editar tarefa":"Nova tarefa"}</h3><div class="grid"><div class="field full"><label>Tarefa</label><input id="ctask" value="${esc(c.task)}" placeholder="Ex.: Conferir cabos e microfones"></div><div class="field"><label>Categoria</label><select id="ccat"><option ${c.category==="Pré-evento"?"selected":""}>Pré-evento</option><option ${c.category==="Montagem"?"selected":""}>Montagem</option><option ${c.category==="Evento"?"selected":""}>Evento</option><option ${c.category==="Desmontagem"?"selected":""}>Desmontagem</option><option ${c.category==="Geral"?"selected":""}>Geral</option></select></div><div class="field"><label>Responsável</label><input id="cres" value="${esc(c.responsible||"")}"></div><div class="field"><label>Prazo</label><input id="cdue" type="date" value="${c.dueDate||""}"></div><div class="field full"><label>Observações</label><textarea id="cnotes">${esc(c.notes||"")}</textarea></div></div><br><button onclick="saveChecklist(${id||0})">Salvar</button> <button class="ghost" onclick="closeModal()">Cancelar</button>`)}
 function saveChecklist(id){let c={id:id||Date.now(),source:"manual",task:$("#ctask").value.trim(),category:$("#ccat").value,responsible:$("#cres").value.trim(),dueDate:$("#cdue").value,notes:$("#cnotes").value,done:id?Boolean(db.checklist.find(x=>x.id===id)?.done):false};if(!c.task)return alert("Informe a tarefa.");if(id)db.checklist=db.checklist.map(x=>x.id===id?c:x);else db.checklist.unshift(c);save();closeModal();checklist()}
 function toggleChecklist(id){let c=db.checklist.find(x=>Number(x.id)===Number(id));if(c){c.done=!c.done;save();checklist()}}
