@@ -34,3 +34,6 @@ section#content{padding:26px;max-width:1450px}.bar{display:flex;justify-content:
 .optional-add-title{margin-top:18px}
 .quote-help{font-size:11px;margin:-4px 0 8px}
 @media(max-width:700px){.qline{flex-wrap:wrap}.qname{min-width:calc(100% - 38px)}.qline .qv,.qline .ov{width:100px!important}.qty-control{margin-left:auto}.subtotalbox,.optional-total{font-size:11px}}
+
+/* V15 — checklist de carregamento por orçamento */
+.checklist-event{margin-bottom:18px}.checklist-event-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:12px}.checklist-event-head h3{margin:5px 0}.check-count{font-weight:900;color:#7ef0b4;background:#123b2a;border:1px solid #245e42;padding:8px 12px;border-radius:999px;white-space:nowrap}.checklist-table{min-width:0}.check-cell{width:58px;text-align:center!important}.check-big{width:22px;height:22px;accent-color:#18b8ee;cursor:pointer}.check-row.checked-row{background:#0c1d17}.check-item-name{font-size:14px}.checked-row .check-item-name{color:#7ef0b4}.checklist-event .tablebox{box-shadow:none}.checklist-event .table td,.checklist-event .table th{vertical-align:middle}@media(max-width:700px){.checklist-event-head{align-items:flex-start;flex-direction:column}.check-count{align-self:flex-start}.checklist-table{min-width:520px}}
