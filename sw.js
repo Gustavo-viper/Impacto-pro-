@@ -1,4 +1,4 @@
-const C="impacto-pro-v9";
+const C="impacto-pro-v11";
 const A=[
   "./","./index.html","./style.css","./app.js","./manifest.json",
   "./assets/impacto-pro-logo.jpeg",

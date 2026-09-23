@@ -17,3 +17,20 @@ section#content{padding:26px;max-width:1450px}.bar{display:flex;justify-content:
 .download-head{display:flex;align-items:center;gap:16px}.download-head img{width:74px;height:74px;border-radius:15px;object-fit:cover;background:#000}.download-head h3{margin:0 0 5px}.download-options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.download-card{padding:16px;border:1px solid #23465d;border-radius:12px;background:#08131d}.download-card h4{margin:0 0 8px;font-size:15px}.download-card button{width:100%}
 @media(max-width:900px){aside{position:relative;width:100%;height:auto;bottom:auto;padding:12px}.brand-side{padding-bottom:12px;margin-bottom:12px}.sidelogo{height:58px}nav{gap:6px}nav button{text-align:left;padding:11px 12px}.sidebar-footer{margin-top:10px}main{margin-left:0}header{position:sticky}.cards{grid-template-columns:1fr 1fr}.hero-panel{align-items:flex-start;flex-direction:column}.connection-card{width:100%}}
 @media(max-width:600px){header{height:auto;min-height:78px;padding:14px 16px;gap:10px}header h1{font-size:18px}.header-actions{gap:6px;flex-wrap:wrap;justify-content:flex-end}.downloadbtn{font-size:11px;padding:8px 10px}section#content{padding:16px}.bar{align-items:flex-start;flex-direction:column}.bar>button{width:100%}.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.full{grid-column:auto}.qline{grid-template-columns:24px 1fr 65px 82px 25px;font-size:12px}.table{min-width:650px}.download-options{grid-template-columns:1fr}.modalbox{padding:16px}.hero-panel h2{font-size:23px}}
+
+/* V10 */
+.dark-select{background:#07111a;color:#fff;border:1px solid #28485e;padding:8px;border-radius:8px;min-width:130px}.rentqty{width:82px;padding:8px;background:#07111a;color:#fff;border:1px solid #28485e;border-radius:8px}.done-text{text-decoration:line-through;opacity:.55}.mini-cards{grid-template-columns:repeat(3,1fr);margin-bottom:18px}.actions{display:flex;gap:8px;flex-wrap:wrap}.status.disponivel{background:#123b2a;color:#7ef0b4}.status.manutencao{background:#4a2d16;color:#ffd08a}@media(max-width:850px){aside{position:relative;width:100%;height:auto;min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:12px}.brand-side{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px}.sidelogo{width:150px;height:50px}.brand-caption{display:none}nav{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}main{margin-left:0}header{position:sticky;top:0}.mini-cards{grid-template-columns:1fr}.tablebox{overflow:auto}section#content{padding:16px}.bar{align-items:flex-start;flex-direction:column}}
+
+/* V11 — seleção de estoque e opcionais no orçamento */
+.qline{align-items:center;gap:10px}
+.qname{flex:1;min-width:150px;display:flex;flex-direction:column;line-height:1.25}
+.qname small{font-size:10px;color:#7c8994;margin-top:3px}
+.qty-control{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.qty-control .qq,.qty-control .oq{width:58px!important;text-align:center}
+.qtybtn{width:32px;height:32px;padding:0!important;display:inline-flex;align-items:center;justify-content:center;font-size:18px}
+.qline .qv,.qline .ov{width:105px!important}
+.subtotalbox,.optional-total{display:flex;justify-content:space-between;align-items:center;margin:12px 0;padding:12px 14px;border:1px solid #dce4ea;border-radius:10px;background:#f7fafc;font-size:12px;font-weight:800}
+.optional-total{background:#fffaf0;border-color:#f0d9a2}
+.optional-add-title{margin-top:18px}
+.quote-help{font-size:11px;margin:-4px 0 8px}
+@media(max-width:700px){.qline{flex-wrap:wrap}.qname{min-width:calc(100% - 38px)}.qline .qv,.qline .ov{width:100px!important}.qty-control{margin-left:auto}.subtotalbox,.optional-total{font-size:11px}}
