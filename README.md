@@ -36,3 +36,13 @@ O app instalado verifica novas versões no servidor, atualiza o Service Worker e
 
 ## V24 — Logo do cabeçalho do PDF
 A logo do cabeçalho do PDF usa a versão transparente, eliminando a tarja preta. A marca d'água A4 de página inteira permanece independente.
+
+
+## V25 — Orçamento por setores e opcionais separados
+- Equipamentos aparecem uma única vez sob cada setor.
+- O valor total do orçamento principal aparece depois de todos os setores.
+- Opcionais aparecem depois do valor total principal.
+- Cada opcional mostra seu valor unitário.
+- O total dos opcionais só aparece quando a opção estiver marcada.
+- O total dos opcionais nunca é somado ao valor total principal.
+- O campo de estoque usa o termo Setor.
