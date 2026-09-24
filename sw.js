@@ -1,4 +1,4 @@
-const C="impacto-pro-v28";
+const C="impacto-pro-v29";
 const A=[
   "./","./index.html","./style.css","./app.js","./manifest.json","./version.json",
   "./assets/impacto-pro-logo-transparent.png","./assets/impacto-pro-logo.jpeg","./assets/impacto-pro-logo-original.png","./assets/impacto-pro-marca-dagua-a4.jpg",
