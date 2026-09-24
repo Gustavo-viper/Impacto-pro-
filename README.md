@@ -53,3 +53,12 @@ A logo do cabeçalho do PDF usa a versão transparente, eliminando a tarja preta
 - A versão nativa do PDF também recebe a logo sobre fundo branco, sem tarja.
 - O botão "Enviar PDF" em computadores baixa o PDF e abre o WhatsApp Web com uma mensagem pronta para compartilhar; basta anexar o PDF na conversa.
 - Em celulares/tablets compatíveis, o compartilhamento nativo pode enviar o arquivo PDF diretamente.
+
+
+## V27 — Correção definitiva do cabeçalho e WhatsApp
+- O cabeçalho do PDF não usa mais o JPEG antigo com fundo preto.
+- A pré-visualização usa a PNG transparente.
+- O PDF nativo usa uma imagem branca limpa no cabeçalho, visualmente sem tarja preta.
+- O botão Enviar PDF abre o WhatsApp imediatamente no computador para evitar bloqueio de pop-up e baixa o PDF para anexar.
+- No celular, tenta o compartilhamento nativo do arquivo.
+- O botão Enviar PDF da pré-visualização chama a mesma rotina.
