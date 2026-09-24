@@ -46,3 +46,10 @@ A logo do cabeçalho do PDF usa a versão transparente, eliminando a tarja preta
 - O total dos opcionais só aparece quando a opção estiver marcada.
 - O total dos opcionais nunca é somado ao valor total principal.
 - O campo de estoque usa o termo Setor.
+
+
+## V26 — PDF e WhatsApp
+- Logo do cabeçalho do PDF usa PNG transparente, sem tarja preta.
+- A versão nativa do PDF também recebe a logo sobre fundo branco, sem tarja.
+- O botão "Enviar PDF" em computadores baixa o PDF e abre o WhatsApp Web com uma mensagem pronta para compartilhar; basta anexar o PDF na conversa.
+- Em celulares/tablets compatíveis, o compartilhamento nativo pode enviar o arquivo PDF diretamente.
