@@ -93,3 +93,10 @@ Correção da aba Opcionais para sincronizar todos os itens do Estoque e correç
 - Aviso flutuante aparece quando uma nova versão está disponível e oferece o botão `RECARREGAR`.
 - O Service Worker é atualizado com `updateViaCache: none` e verificação periódica.
 - Para usar offline no PC: abra o endereço publicado uma vez com internet e instale o PWA pelo Chrome/Edge. Depois ele continua disponível sem internet.
+
+
+## V39 — Setores fixos no estoque
+- Setores do estoque já vêm cadastrados no sistema.
+- Ao cadastrar/editar equipamento, basta selecionar o setor em uma lista.
+- Setor selecionado é usado automaticamente nos orçamentos e PDFs.
+- Equipamentos com categorias antigas não padronizadas são migrados para "Outros".
