@@ -1,4 +1,9 @@
-# Impacto Pro Orçamentos — V19
+# Impacto Pro Orçamentos — V40
+
+- Botão **Enviar PDF** do preview agora compartilha o arquivo diretamente pelo Web Share API no iPhone/iPad quando suportado.
+- O PDF é preparado antes do clique, preservando a ativação do usuário exigida pelo Safari/iOS.
+- Em navegadores sem compartilhamento de arquivos, o PDF é baixado e o WhatsApp é aberto com a mensagem pronta para anexar o arquivo.
+- Versão de build: 40.0.
 
 - PDF com formatação de documento A4.
 - Títulos 16 pt e texto 12 pt.
