@@ -1,3 +1,11 @@
+# Impacto Pro Orçamentos — V46
+
+- Na criação/edição de orçamentos, o cadastro do cliente voltou a solicitar **somente o nome do cliente**.
+- CPF/CNPJ, telefone, e-mail e endereço não são mais pedidos na tela de Orçamentos.
+- O restante do fluxo de orçamento permanece igual.
+- O módulo Contratos continua permitindo inserir manualmente os dados completos do cliente no contrato.
+- Agenda, validade de 15 dias, alerta de vencimento, status Recusado, checklist por setores, responsividade para tablets, offline e demais recursos anteriores foram preservados.
+
 # Impacto Pro Orçamentos — V41
 
 - Botão **Enviar PDF** do preview agora compartilha o arquivo diretamente pelo Web Share API no iPhone/iPad quando suportado.
