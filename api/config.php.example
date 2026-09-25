@@ -1,0 +1,9 @@
+<?php
+// Copie este arquivo para config.php e preencha os dados do MySQL criados no HostGator.
+return [
+  'host' => 'localhost',
+  'dbname' => 'SEU_BANCO',
+  'user' => 'SEU_USUARIO',
+  'pass' => 'SUA_SENHA',
+  'token' => 'ALTERE-ESTA-CHAVE-FORTE'
+];

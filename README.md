@@ -133,3 +133,26 @@ Correção da aba Opcionais para sincronizar todos os itens do Estoque e correç
 - Alerta 2 dias antes do vencimento, com aviso flutuante e Notification API quando a permissão estiver concedida.
 - Novo status de orçamento: Recusado, com opção de reabrir.
 - Aceito, recusado e em aberto ficam separados e não alteram o valor do orçamento.
+
+## V48 — Estoque, locações, checklist, contrato, financeiro e banco central
+- Estoque: botão rápido **Alugado** e setores selecionáveis por botões de toque, compatíveis com Android/iPad.
+- Equipamentos alugados: exibe somente itens alugados e permite data de saída, data de retorno, locatário e condição de retorno.
+- Checklist: reconcilia automaticamente itens do estoque e dos orçamentos e mantém quantidade total por equipamento/setor.
+- Contrato: discriminação de setores e forma de pagamento são campos manuais e editáveis.
+- Financeiro: solicita senha administrativa antes de liberar a aba.
+- Banco central: a V48 inclui uma API PHP + MySQL para sincronização entre dispositivos. O aplicativo continua offline/local quando a API não estiver configurada.
+
+### HostGator
+A API pode ser hospedada no HostGator e o banco em MySQL. Para hospedagem compartilhada, use cPanel/MySQL. Se optar por PostgreSQL ou por uma aplicação Node.js completa no próprio servidor, a modalidade adequada é VPS/Dedicado conforme os recursos do plano. Configure `api/config.php` a partir de `api/config.php.example`, importe `database/schema.sql` no MySQL e informe a URL da API e a chave em Configurações > Banco de dados central.
+
+
+## V48
+- Botão Alugado no cadastro de estoque.
+- Equipamentos alugados com saída/retorno.
+- Checklist por setores e quantidade total.
+- Banco central consultado ao navegar quando configurado.
+- Contrato com setores e pagamento editáveis.
+- Permissão para Financeiro.
+- Seleção de setor por botões touch para Android/iPad.
+- Responsável do evento selecionável no orçamento.
+- Data inicial e data final do evento; suportado em PDF e contrato.

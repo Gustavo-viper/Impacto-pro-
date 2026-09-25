@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS impacto_app_state (
+  state_key VARCHAR(64) NOT NULL PRIMARY KEY,
+  payload LONGTEXT NOT NULL,
+  updated_at BIGINT NOT NULL DEFAULT 0
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
