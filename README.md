@@ -156,3 +156,8 @@ A API pode ser hospedada no HostGator e o banco em MySQL. Para hospedagem compar
 - Seleção de setor por botões touch para Android/iPad.
 - Responsável do evento selecionável no orçamento.
 - Data inicial e data final do evento; suportado em PDF e contrato.
+
+
+## V49
+- Checklist corrigido: corrigido erro de variável na renderização que impedia a abertura da tela.
+- Responsável pelo evento agora é um campo de texto livre no orçamento, permitindo digitar qualquer nome.
