@@ -85,7 +85,7 @@ Correção da aba Opcionais para sincronizar todos os itens do Estoque e correç
 - Cache do Service Worker atualizado para V30.
 
 
-## V36 — offline no Windows/macOS e atualização automática
+## V37 — offline no Windows/macOS e atualização automática
 - Service Worker com cache offline do aplicativo e dos arquivos principais.
 - Estratégia network-first para index.html, app.js e style.css quando houver internet, com fallback para o cache quando estiver offline.
 - Cache antigo do Impacto Pro é removido automaticamente na ativação de uma nova versão.
