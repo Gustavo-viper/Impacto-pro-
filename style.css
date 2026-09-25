@@ -38,12 +38,15 @@ section#content{padding:26px;max-width:1450px}.bar{display:flex;justify-content:
 /* V15 — checklist de carregamento por orçamento */
 .checklist-event{margin-bottom:18px}.checklist-event-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:12px}.checklist-event-head h3{margin:5px 0}.check-count{font-weight:900;color:#7ef0b4;background:#123b2a;border:1px solid #245e42;padding:8px 12px;border-radius:999px;white-space:nowrap}.checklist-table{min-width:0}.check-cell{width:58px;text-align:center!important}.check-big{width:22px;height:22px;accent-color:#18b8ee;cursor:pointer}.check-row.checked-row{background:#0c1d17}.check-item-name{font-size:14px}.checked-row .check-item-name{color:#7ef0b4}.checklist-event .tablebox{box-shadow:none}.checklist-event .table td,.checklist-event .table th{vertical-align:middle}@media(max-width:700px){.checklist-event-head{align-items:flex-start;flex-direction:column}.check-count{align-self:flex-start}.checklist-table{min-width:520px}}
 
-#impactoUpdateNotice{position:fixed;inset:0;z-index:99999;display:flex;align-items:flex-end;justify-content:center;padding:18px;pointer-events:none}
-.impacto-update-box{pointer-events:auto;width:min(560px,100%);display:flex;align-items:center;gap:13px;padding:15px 16px;border:1px solid rgba(0,220,255,.32);border-radius:16px;background:rgba(8,14,22,.97);box-shadow:0 18px 50px rgba(0,0,0,.42);color:#fff;backdrop-filter:blur(12px)}
-.impacto-update-icon{width:40px;height:40px;min-width:40px;display:grid;place-items:center;border-radius:50%;background:#10c878;color:#06130d;font-weight:900;font-size:22px}
+#impactoUpdateNotice{position:fixed;left:0;right:0;bottom:0;z-index:99999;display:flex;align-items:flex-end;justify-content:center;padding:18px;pointer-events:none}
+.impacto-update-box{pointer-events:auto;width:min(680px,100%);display:flex;align-items:center;gap:13px;padding:15px 16px;border:1px solid rgba(0,220,255,.42);border-radius:16px;background:rgba(8,14,22,.98);box-shadow:0 18px 50px rgba(0,0,0,.5);color:#fff;backdrop-filter:blur(12px);animation:impactoUpdateIn .28s ease-out}
+.impacto-update-icon{width:42px;height:42px;min-width:42px;display:grid;place-items:center;border-radius:50%;background:#10c878;color:#06130d;font-weight:900;font-size:22px}
+.impacto-update-copy{flex:1;min-width:0}
 .impacto-update-box strong{display:block;font-size:15px;margin-bottom:4px}
-.impacto-update-box p{margin:0;font-size:13px;line-height:1.35;opacity:.82}
-#impactoUpdateClose{margin-left:auto;border:0;border-radius:10px;padding:9px 13px;cursor:pointer;font-weight:800;background:#12cfe9;color:#001018}
+.impacto-update-box p{margin:0;font-size:13px;line-height:1.35;opacity:.86}
+#impactoUpdateReload{margin-left:auto;border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:900;background:#12cfe9;color:#001018;white-space:nowrap}
+@keyframes impactoUpdateIn{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+@media(max-width:600px){#impactoUpdateNotice{padding:12px}.impacto-update-box{align-items:flex-start;padding:13px}.impacto-update-icon{width:36px;height:36px;min-width:36px}.impacto-update-box p{font-size:12px}#impactoUpdateReload{font-size:11px;padding:9px 10px}}
 
 /* V21 setores, locações e formulários */
 .sector-row td{background:rgba(0,210,255,.08);border-top:1px solid rgba(0,210,255,.18);font-size:13px;text-transform:uppercase;letter-spacing:.04em}

@@ -83,3 +83,13 @@ Correção da aba Opcionais para sincronizar todos os itens do Estoque e correç
 - Todo produto do Estoque é sincronizado como opcional automaticamente.
 - A sincronização acontece na entrada do aplicativo, ao salvar o Estoque e ao abrir Opcionais.
 - Cache do Service Worker atualizado para V30.
+
+
+## V36 — offline no Windows/macOS e atualização automática
+- Service Worker com cache offline do aplicativo e dos arquivos principais.
+- Estratégia network-first para index.html, app.js e style.css quando houver internet, com fallback para o cache quando estiver offline.
+- Cache antigo do Impacto Pro é removido automaticamente na ativação de uma nova versão.
+- Verificação de versão em `version.json` a cada 60 segundos.
+- Aviso flutuante aparece quando uma nova versão está disponível e oferece o botão `RECARREGAR`.
+- O Service Worker é atualizado com `updateViaCache: none` e verificação periódica.
+- Para usar offline no PC: abra o endereço publicado uma vez com internet e instale o PWA pelo Chrome/Edge. Depois ele continua disponível sem internet.
