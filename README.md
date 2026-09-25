@@ -62,3 +62,24 @@ A logo do cabeçalho do PDF usa a versão transparente, eliminando a tarja preta
 - O botão Enviar PDF abre o WhatsApp imediatamente no computador para evitar bloqueio de pop-up e baixa o PDF para anexar.
 - No celular, tenta o compartilhamento nativo do arquivo.
 - O botão Enviar PDF da pré-visualização chama a mesma rotina.
+
+
+## V28 — Opcionais automáticos, offline no PC e lembretes
+- Todo equipamento cadastrado no Estoque aparece automaticamente na aba Opcionais.
+- O valor do opcional pode ser configurado separadamente do valor do Estoque.
+- O app usa Service Worker e cache local para continuar funcionando offline no PC após o primeiro carregamento online.
+- Nova aba Lembretes com título, mensagem, intervalo em minutos/horas/dias, ativação/pausa e próxima execução.
+- Notificações do navegador podem ser ativadas pelo botão da aba Lembretes.
+- Os lembretes locais funcionam mesmo sem internet enquanto o aplicativo estiver aberto. Para notificações garantidas com o aplicativo completamente fechado seria necessário um serviço de push/servidor.
+
+
+## V29
+Correção da aba Opcionais para sincronizar todos os itens do Estoque e correção da rota Lembretes. Cache atualizado.
+
+
+## V30 — correção efetiva
+- Corrigido o roteador real do aplicativo para reconhecer a tela Lembretes.
+- Implementada a tela Lembretes completa.
+- Todo produto do Estoque é sincronizado como opcional automaticamente.
+- A sincronização acontece na entrada do aplicativo, ao salvar o Estoque e ao abrir Opcionais.
+- Cache do Service Worker atualizado para V30.
