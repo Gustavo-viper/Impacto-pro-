@@ -25,22 +25,25 @@ function pdfHeaderLogoTransparent(src){
   });
 }
 
-/* AUTO_UPDATE_V36 — atualização automática + aviso flutuante */
+/* AUTO_UPDATE_V38 — atualização automática + aviso flutuante */
 (function(){
-  const BUILD_VERSION="36.0";
+  const BUILD_VERSION="38.0";
   const BUILD_KEY="impacto-pro-installed-version";
   const VERSION_URL="./version.json?v="+encodeURIComponent(BUILD_VERSION);
   let initialController=!!navigator.serviceWorker?.controller;
   let updateNoticeShown=false;
+  let justReloadedForUpdate=false;
+  try{ justReloadedForUpdate=sessionStorage.getItem("impacto-update-reloaded")==="1"; sessionStorage.removeItem("impacto-update-reloaded"); }catch(e){}
 
   function showUpdateNotice(message="Uma nova versão do Impacto Pro está disponível."){
+    if(justReloadedForUpdate) return;
     if(updateNoticeShown || document.getElementById("impactoUpdateNotice")) return;
     updateNoticeShown=true;
     const el=document.createElement("div");
     el.id="impactoUpdateNotice";
     el.innerHTML='<div class="impacto-update-box"><div class="impacto-update-icon">↻</div><div class="impacto-update-copy"><strong>Impacto Pro foi atualizado</strong><p>'+message+'</p></div><button id="impactoUpdateReload" type="button">RECARREGAR</button></div>';
     document.body.appendChild(el);
-    document.getElementById("impactoUpdateReload").onclick=()=>location.reload();
+    document.getElementById("impactoUpdateReload").onclick=()=>{ try{sessionStorage.setItem("impacto-update-reloaded","1");}catch(e){} location.reload(); };
   }
 
   async function checkVersion(){
