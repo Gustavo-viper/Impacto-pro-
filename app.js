@@ -97,14 +97,19 @@ function page(p){
  if(!t[p])p="dash";
  $("#title").textContent=t[p];
  $$("aside nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));
- const views={dash,quotes,optionals,stock,rent,checklist,finance,reminders,history,settings};
+ const views={dash,quotes,optionals,stock,rent,checklist,finance,reminders:openRemindersPage,history,settings:openSettingsPage};
  try{views[p]()}catch(e){console.error(e);$("#content").innerHTML=`<div class="panel"><h2>Erro ao abrir ${esc(t[p])}</h2><p class="muted">${esc(e.message||e)}</p></div>`}
 }
-function settings(){
-  const show=Boolean(db.settings?.showOptionalTotal);
-  $("#content").innerHTML=`<div class="bar"><div><h2>Configurações</h2><span class="muted">Defina como os valores dos opcionais serão apresentados no PDF.</span></div></div><div class="panel settings-panel"><div class="setting-row"><div><b>Mostrar total dos opcionais no PDF</b><p class="muted">Desativado: o PDF mostra somente o valor unitário de cada opcional. Ativado: mostra o valor unitário e, abaixo, o total dos opcionais.</p></div><label class="switch"><input id="showOptionalTotal" type="checkbox" ${show?"checked":""} onchange="saveSettings()"><span></span></label></div></div>`
+function openSettingsPage(){
+  db.settings=db.settings||{showOptionalTotal:false};
+  const show=Boolean(db.settings.showOptionalTotal);
+  $("#title").textContent="Configurações";
+  $$("aside nav button").forEach(b=>b.classList.toggle("active",b.dataset.page==="settings"));
+  $("#content").innerHTML=`<div class="bar"><div><h2>Configurações</h2><span class="muted">Defina como os valores dos opcionais serão apresentados no PDF.</span></div></div>
+  <div class="panel settings-panel"><div class="setting-row"><div><b>Mostrar total dos opcionais no PDF</b><p class="muted">Ative para mostrar o total dos opcionais separadamente do total principal.</p></div>
+  <label class="switch"><input id="showOptionalTotal" type="checkbox" ${show?"checked":""} onchange="saveSettings()"><span></span></label></div></div>`;
 }
-function saveSettings(){db.settings.showOptionalTotal=Boolean($("#showOptionalTotal")?.checked);save();settings()}
+function saveSettings(){db.settings.showOptionalTotal=Boolean($("#showOptionalTotal")?.checked);save();openSettingsPage()}
 function dash(){$("#content").innerHTML=`<div class="hero-panel"><div><span class="eyebrow">GESTÃO PROFISSIONAL</span><h2>Impacto Pro Orçamentos</h2><p class="muted">Crie, edite e gere seus orçamentos mesmo sem internet.</p></div><div class="connection-card"><span id="mode-badge"></span><small id="storage-state">Dados salvos automaticamente neste aparelho</small></div></div><div class="cards"><div class="card"><span class="card-label">ORÇAMENTOS</span><b>${db.quotes.length}</b></div><div class="card"><span class="card-label">ITENS EM ESTOQUE</span><b>${db.products.reduce((a,p)=>a+Number(p.qty||0),0)}</b></div><div class="card"><span class="card-label">ALUGADOS</span><b>${db.products.filter(x=>(x.status||"Disponível")==="Alugado").length}</b></div><div class="card"><span class="card-label">OPCIONAIS</span><b>${db.optionals.length}</b></div></div><div class="panel welcome"><h3>Comece por um orçamento</h3><p class="muted">Os dados ficam disponíveis offline e são mantidos no armazenamento local do aparelho. Quando a internet voltar, o indicador muda automaticamente para <b>Online</b>.</p><button onclick="quoteModal()">+ Novo orçamento</button></div>`;updateNetworkStatus();updateStorageState()}
 function syncStockToOptionals(){
  db.optionals=Array.isArray(db.optionals)?db.optionals:[];
@@ -379,9 +384,13 @@ function financeModal(id){let f=db.finance.find(x=>x.id===id)||{date:new Date().
 function saveFinance(id){let f={id:id||Date.now(),date:$("#fdate").value,type:$("#ftype").value,category:$("#fcat").value.trim()||"Geral",description:$("#fdesc").value.trim(),value:Number($("#fval").value||0),notes:$("#fnotes").value};if(!f.value)return alert("Informe um valor.");if(id)db.finance=db.finance.map(x=>x.id===id?f:x);else db.finance.unshift(f);save();closeModal();finance()}
 function delFinance(id){if(confirm("Excluir este lançamento?")){db.finance=db.finance.filter(x=>x.id!==id);save();finance()}}
 function exportFinanceCSV(){const head="Data;Tipo;Categoria;Descrição;Valor\n";const body=db.finance.map(x=>[x.date,x.type,x.category,x.description,Number(x.value||0).toFixed(2)].map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\n');const blob=new Blob([head+body],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='impacto-pro-financeiro.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function reminders(){
- let rows=db.reminders.map(r=>`<tr><td><b>${esc(r.title)}</b><br><span class="muted">${esc(r.message)}</span></td><td>${r.intervalMinutes} min</td><td>${r.active!==false?"Ativo":"Pausado"}</td><td><button class="ghost small" onclick='reminderModal(${JSON.stringify(r.id)})'>Editar</button> <button class="danger small" onclick='delReminder(${JSON.stringify(r.id)})'>Excluir</button></td></tr>`).join("");
- $("#content").innerHTML=`<div class="bar"><div><h2>Lembretes</h2><span class="muted">Configure a mensagem e o intervalo.</span></div><button onclick="reminderModal()">+ Novo lembrete</button></div><div class="panel" style="margin-bottom:14px"><button onclick="requestReminderPermission()">Ativar notificações</button></div><div class="tablebox"><table class="table"><tr><th>Lembrete</th><th>Intervalo</th><th>Status</th><th>Ações</th></tr>${rows||'<tr><td colspan="4" class="empty">Nenhum lembrete.</td></tr>'}</table></div>`;
+function openRemindersPage(){
+  const rows=(db.reminders||[]).map(r=>`<tr><td><b>${esc(r.title||"Lembrete")}</b><br><span class="muted">${esc(r.message||"")}</span></td><td>${r.intervalMinutes||60} min</td><td><span class="status ${r.active!==false?"disponivel":"manutencao"}">${r.active!==false?"Ativo":"Pausado"}</span></td><td><button class="ghost small" onclick='reminderModal(${JSON.stringify(r.id)})'>Editar</button> <button class="danger small" onclick='delReminder(${JSON.stringify(r.id)})'>Excluir</button></td></tr>`).join("");
+  $("#title").textContent="Lembretes";
+  $$("aside nav button").forEach(b=>b.classList.toggle("active",b.dataset.page==="reminders"));
+  $("#content").innerHTML=`<div class="bar"><div><h2>Lembretes</h2><span class="muted">Configure a mensagem e o intervalo dos lembretes.</span></div><button onclick="reminderModal()">+ Novo lembrete</button></div>
+  <div class="panel" style="margin-bottom:14px"><b>Notificações</b><p class="muted">Ative as notificações do navegador para receber avisos.</p><button onclick="requestReminderPermission()">Ativar notificações</button></div>
+  <div class="tablebox"><table class="table"><tr><th>Lembrete</th><th>Intervalo</th><th>Status</th><th>Ações</th></tr>${rows||'<tr><td colspan="4" class="empty">Nenhum lembrete cadastrado.</td></tr>'}</table></div>`;
 }
 function reminderModal(id){
  let r=db.reminders.find(x=>String(x.id)===String(id))||{title:"",message:"",intervalMinutes:60,active:true};
@@ -390,9 +399,9 @@ function reminderModal(id){
 function saveReminder(id){
  let mins=Math.max(1,Number($("#ri").value||60));
  let r={id:id||("rem-"+Date.now()),title:$("#rt").value.trim()||"Lembrete",message:$("#rm").value.trim()||"Lembrete do Impacto Pro",intervalMinutes:mins,active:$("#ra").value==="1",nextAt:Date.now()+mins*60000};
- if(id)db.reminders=db.reminders.map(x=>String(x.id)===String(id)?r:x);else db.reminders.push(r);save();closeModal();reminders()
+ if(id)db.reminders=db.reminders.map(x=>String(x.id)===String(id)?r:x);else db.reminders.push(r);save();closeModal();openRemindersPage()
 }
-function delReminder(id){if(confirm("Excluir lembrete?")){db.reminders=db.reminders.filter(x=>String(x.id)!==String(id));save();reminders()}}
+function delReminder(id){if(confirm("Excluir lembrete?")){db.reminders=db.reminders.filter(x=>String(x.id)!==String(id));save();openRemindersPage()}}
 async function requestReminderPermission(){if(!("Notification" in window))return alert("Navegador sem suporte a notificações.");let p=Notification.permission==="granted"?"granted":await Notification.requestPermission();alert(p==="granted"?"Notificações ativadas.":"Permissão não concedida.")}
 function checkReminders(){let now=Date.now(),changed=false;(db.reminders||[]).forEach(r=>{if(r.active===false)return;if(!r.nextAt){r.nextAt=now+Number(r.intervalMinutes||60)*60000;changed=true}if(r.nextAt<=now){if("Notification" in window&&Notification.permission==="granted")new Notification(r.title||"Impacto Pro",{body:r.message||""});else alert((r.title||"Lembrete")+"\n\n"+(r.message||""));r.nextAt=now+Number(r.intervalMinutes||60)*60000;changed=true}});if(changed)save()}
 setInterval(checkReminders,15000);
@@ -402,3 +411,14 @@ function downloadSystem(){modal(`<div class="download-head"><img src="./assets/i
 async function installAndroid(){if(window.deferredPrompt){window.deferredPrompt.prompt();await window.deferredPrompt.userChoice;window.deferredPrompt=null;closeModal();return}closeModal();alert("Se a opção de instalação não aparecer automaticamente, abra o menu do navegador e escolha 'Instalar aplicativo' ou 'Adicionar à tela inicial'. O ícone Impacto Pro será usado pelo sistema.")}
 window.deferredPrompt=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();window.deferredPrompt=e});
 window.addEventListener("online",updateNetworkStatus);window.addEventListener("offline",updateNetworkStatus);setInterval(()=>{if(document.body.contains($("#app"))&& !$("#app").classList.contains("hidden") && Number(localStorage.getItem(SESSION_KEY)||0)<=Date.now()) logout()},60000);checkSession();updateNetworkStatus();
+
+document.addEventListener("click",function(e){
+  const b=e.target.closest("aside nav button[data-page]");
+  if(!b)return;
+  e.preventDefault();
+  e.stopImmediatePropagation();
+  const p=b.getAttribute("data-page");
+  if(p==="settings") return openSettingsPage();
+  if(p==="reminders") return openRemindersPage();
+  return page(p);
+},true);
