@@ -116,3 +116,12 @@ Correção da aba Opcionais para sincronizar todos os itens do Estoque e correç
 - Manifesto PWA com orientação `any` para permitir retrato e paisagem.
 - Metatags específicas para instalação como app no iPad/iPhone.
 - Versão atualizada para 43.0.
+
+
+## V45 — Agenda e validade dos orçamentos
+- Agenda mensal com quantidade de orçamentos por dia, usando automaticamente a data de emissão.
+- Cada orçamento recebe validade automática de 15 dias após a emissão.
+- Exibição da data de vencimento na lista de orçamentos e na agenda.
+- Alerta 2 dias antes do vencimento, com aviso flutuante e Notification API quando a permissão estiver concedida.
+- Novo status de orçamento: Recusado, com opção de reabrir.
+- Aceito, recusado e em aberto ficam separados e não alteram o valor do orçamento.

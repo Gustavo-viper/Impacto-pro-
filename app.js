@@ -27,7 +27,7 @@ function pdfHeaderLogoTransparent(src){
 
 /* AUTO_UPDATE_V38 — atualização automática + aviso flutuante */
 (function(){
-  const BUILD_VERSION="43.0";
+  const BUILD_VERSION="45.0";
   const BUILD_KEY="impacto-pro-installed-version";
   const VERSION_URL="./version.json?v="+encodeURIComponent(BUILD_VERSION);
   let initialController=!!navigator.serviceWorker?.controller;
@@ -153,11 +153,11 @@ function updateNetworkStatus(){const online=navigator.onLine;const n=$("#net");i
 window.addEventListener("online",updateNetworkStatus);window.addEventListener("offline",updateNetworkStatus);
 function updateStorageState(){const s=$("#storage-state");if(s)s.textContent="Dados salvos automaticamente neste aparelho"}
 function page(p){
- const t={dash:"Dashboard",quotes:"Orçamentos",optionals:"Opcionais",stock:"Estoque",rent:"Equipamentos alugados",checklist:"Checklist",finance:"Financeiro",reminders:"Lembretes",contracts:"Contratos",history:"Histórico",settings:"Configurações"};
+ const t={dash:"Dashboard",quotes:"Orçamentos",agenda:"Agenda",optionals:"Opcionais",stock:"Estoque",rent:"Equipamentos alugados",checklist:"Checklist",finance:"Financeiro",reminders:"Lembretes",contracts:"Contratos",history:"Histórico",settings:"Configurações"};
  if(!t[p])p="dash";
  $("#title").textContent=t[p];
  $$("aside nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===p));
- const views={dash,quotes,optionals,stock,rent,checklist,finance,reminders:openRemindersPage,contracts:contractsPage,history,settings:openSettingsPage};
+ const views={dash,quotes,agenda,optionals,stock,rent,checklist,finance,reminders:openRemindersPage,contracts:contractsPage,history,settings:openSettingsPage};
  try{views[p]()}catch(e){console.error(e);$("#content").innerHTML=`<div class="panel"><h2>Erro ao abrir ${esc(t[p])}</h2><p class="muted">${esc(e.message||e)}</p></div>`}
 }
 function openSettingsPage(){
@@ -201,7 +201,62 @@ function stock(){
 function prodModal(id){let p=db.products.find(x=>x.id===id)||{name:"",category:"Outros",qty:0,value:0,status:"Disponível"};modal(`<h3>${id?"Editar item":"Novo equipamento"}</h3><div class="grid"><div class="field full"><label>Nome do equipamento</label><input id="pn" value="${esc(p.name)}" placeholder="Ex.: Caixa Slim 12 &quot;"></div><div class="field"><label>Setor</label><select id="pc">${stockSectorOptions(p.category)}</select></div><div class="field"><label>Quantidade</label><input id="pq" type="number" min="0" value="${p.qty}"></div><div class="field"><label>Valor padrão</label><input id="pv" type="number" step=".01" value="${p.value}"></div><div class="field"><label>Status</label><select id="ps"><option ${p.status==="Disponível"?"selected":""}>Disponível</option><option ${p.status==="Alugado"?"selected":""}>Alugado</option><option ${p.status==="Manutenção"?"selected":""}>Manutenção</option></select></div></div><p class="muted" style="margin-top:8px">Escolha apenas o setor. Os setores já estão cadastrados no sistema e serão usados automaticamente nos orçamentos e PDFs.</p><br><button onclick="saveProd(${id||0})">Salvar</button> <button class="ghost" onclick="closeModal()">Cancelar</button>`)}
 function saveProd(id){let old=db.products.find(x=>x.id===id);let p={id:id||Date.now(),name:$("#pn").value.trim(),category:normalizeStockSector($("#pc").value),qty:Number($("#pq").value||0),value:Number($("#pv").value||0),status:$("#ps").value,rentedQty:Math.min(Number(old?.rentedQty||0),Number($("#pq").value||0))};if(!p.name)return alert("Informe o nome do equipamento.");if(id)db.products=db.products.map(x=>x.id===id?p:x);else db.products.push(p);syncStockToOptionals();save();closeModal();stock()}
 function delProd(id){if(confirm("Excluir item?")){db.products=db.products.filter(x=>x.id!==id);save();stock()}}
-function quotes(){let rows=db.quotes.map(q=>`<tr><td>${esc(q.number)}</td><td><b>${esc(q.clientName||"—")}</b><br><span class="muted">${esc(q.eventName||"")}</span></td><td>${esc(q.eventDate||q.date||"—")}</td><td><b>Total: ${money(q.total)}</b><br><span class="muted">Opcionais: ${money(q.optionalTotal||0)}</span><br><span class="status ${q.accepted?"disponivel":"manutencao"}">${q.accepted?"Aceito / Fechado":"Em aberto"}</span></td><td><div class="actions"><button class="ghost small" onclick="quoteModal(${q.id})">Editar</button><button class="small" onclick="pdf(${q.id})">PDF</button><button class="ghost small" onclick="sharePdf(${q.id})">Enviar PDF</button>${q.accepted?`<button class="ghost small" onclick="contractsPage(${q.id})">Contrato</button>`:`<button class="small" onclick="acceptQuote(${q.id})">Marcar como aceito</button>`}<button class="danger small" onclick="delQuote(${q.id})">Excluir</button></div></td></tr>`).join("");$("#content").innerHTML=`<div class="bar"><div><h2>Orçamentos</h2><span class="muted">Crie e edite propostas sem precisar cadastrar clientes.</span></div><button onclick="quoteModal()">+ Novo orçamento</button></div><div class="tablebox"><table class="table"><tr><th>Nº</th><th>Cliente</th><th>Evento / Data</th><th>Valor final</th><th>Ações</th></tr>${rows||'<tr><td colspan="5" class="empty">Nenhum orçamento.</td></tr>'}</table></div>`}
+
+function parseBRDate(s){
+  const m=String(s||"").match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(!m)return null;
+  const d=new Date(Number(m[3]),Number(m[2])-1,Number(m[1]));
+  return isNaN(d.getTime())?null:d;
+}
+function isoDateOnly(d){return d?`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`:""}
+function quoteIssueDate(q){
+  if(q.issueDate){const d=new Date(q.issueDate);if(!isNaN(d.getTime()))return d}
+  return parseBRDate(q.date)||new Date();
+}
+function quoteExpiryDate(q){const d=quoteIssueDate(q);d.setHours(0,0,0,0);d.setDate(d.getDate()+15);return d}
+function quoteExpiryText(q){return quoteExpiryDate(q).toLocaleDateString("pt-BR")}
+function quoteStatus(q){return q.status|| (q.accepted?"aceito":"aberto")}
+function showExpiryNotice(q){
+  const msg=`O orçamento ${q.number||""} de ${q.clientName||"cliente"} vence em 2 dias (${quoteExpiryText(q)}). Você pode entrar em contato com o cliente.`;
+  if(document.getElementById("quoteExpiryNotice"))return;
+  const el=document.createElement("div");el.id="quoteExpiryNotice";el.innerHTML=`<div class="impacto-update-box"><div class="impacto-update-icon">!</div><div class="impacto-update-copy"><strong>Orçamento prestes a vencer</strong><p>${esc(msg)}</p></div><button type="button" onclick="document.getElementById('quoteExpiryNotice')?.remove()">OK</button></div>`;document.body.appendChild(el);
+  if("Notification" in window&&Notification.permission==="granted")try{new Notification("Orçamento prestes a vencer",{body:msg})}catch(e){}
+}
+function checkQuoteExpiries(){
+  const now=new Date();now.setHours(0,0,0,0);let changed=false;
+  (db.quotes||[]).forEach(q=>{
+    const status=quoteStatus(q); if(status==="recusado")return;
+    const due=quoteExpiryDate(q), alertDay=new Date(due);alertDay.setDate(alertDay.getDate()-2);alertDay.setHours(0,0,0,0);
+    const key=isoDateOnly(alertDay), today=isoDateOnly(now);
+    if(today===key && q.expiryAlertSent!==key){q.expiryAlertSent=key;changed=true;showExpiryNotice(q)}
+  });
+  if(changed)save();
+}
+function agenda(){
+  const now=new Date();
+  const monthEnd=new Date(now.getFullYear(),now.getMonth()+1,0);
+  const todayKey=isoDateOnly(now);
+  const counts={};
+  (db.quotes||[]).forEach(q=>{const key=isoDateOnly(quoteIssueDate(q));counts[key]=(counts[key]||0)+1});
+  const totalMonth=(db.quotes||[]).filter(q=>{const d=quoteIssueDate(q);return d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth()}).length;
+  const days=[];
+  for(let i=1;i<=monthEnd.getDate();i++){
+    const d=new Date(now.getFullYear(),now.getMonth(),i),key=isoDateOnly(d);
+    const qs=(db.quotes||[]).filter(q=>isoDateOnly(quoteIssueDate(q))===key);
+    let items=qs.map(q=>{const st=quoteStatus(q);const label=st==='aceito'?'Aceito':st==='recusado'?'Recusado':'Em aberto';return '<div class="agenda-quote"><b>'+esc(q.number||'')+'</b> · '+esc(q.clientName||'—')+'<span>'+money(q.total)+' · vence '+quoteExpiryText(q)+' · <span class="status '+(st==='aceito'?'disponivel':st==='recusado'?'manutencao':'')+'">'+label+'</span></span></div>'}).join('');
+    if(!items)items='<div class="muted agenda-empty">Nenhum orçamento</div>';
+    days.push('<div class="agenda-day '+(key===todayKey?'today':'')+'"><div class="agenda-day-head"><b>'+String(i).padStart(2,'0')+'/'+String(now.getMonth()+1).padStart(2,'0')+'</b><span>'+(counts[key]||0)+' orçamento'+((counts[key]||0)===1?'':'s')+'</span></div>'+items+'</div>');
+  }
+  const expiring=(db.quotes||[]).filter(q=>{const due=quoteExpiryDate(q),base=new Date(now.getFullYear(),now.getMonth(),now.getDate()),diff=Math.round((due-base)/86400000);return diff>=0&&diff<=2&&quoteStatus(q)!=='recusado'});
+  const alertHtml=expiring.length?'<div class="panel agenda-alert"><h3>⚠️ Orçamentos próximos do vencimento</h3>'+expiring.map(q=>'<p><b>'+esc(q.number)+'</b> — '+esc(q.clientName||'—')+' — vence em '+quoteExpiryText(q)+'</p>').join('')+'</div>':'';
+  $("#title").textContent="Agenda";
+  $$('aside nav button').forEach(b=>b.classList.toggle('active',b.dataset.page==='agenda'));
+  $("#content").innerHTML='<div class="bar"><div><h2>Agenda de Orçamentos</h2><span class="muted">A data é puxada automaticamente pela emissão de cada orçamento. A validade é calculada em 15 dias.</span></div><button onclick="requestReminderPermission()">Ativar notificações</button></div><div class="cards"><div class="card"><span class="card-label">ORÇAMENTOS NO MÊS</span><b>'+totalMonth+'</b></div><div class="card"><span class="card-label">VENCIMENTOS PRÓXIMOS</span><b>'+expiring.length+'</b></div></div>'+alertHtml+'<div class="agenda-grid">'+days.join('')+'</div>';
+}
+function quotes(){
+ let rows=db.quotes.map(q=>{const st=quoteStatus(q);const label=st==="aceito"?"Aceito / Fechado":st==="recusado"?"Recusado":"Em aberto";const cls=st==="aceito"?"disponivel":st==="recusado"?"manutencao":"";return `<tr><td>${esc(q.number)}</td><td><b>${esc(q.clientName||"—")}</b><br><span class="muted">${esc(q.eventName||"")}</span></td><td>${esc(q.eventDate||q.date||"—")}<br><span class="muted">Emitido: ${esc(q.date||"—")} · Vence: ${quoteExpiryText(q)}</span></td><td><b>Total: ${money(q.total)}</b><br><span class="muted">Opcionais: ${money(q.optionalTotal||0)}</span><br><span class="status ${cls}">${label}</span></td><td><div class="actions"><button class="ghost small" onclick="quoteModal(${q.id})">Editar</button><button class="small" onclick="pdf(${q.id})">PDF</button><button class="ghost small" onclick="sharePdf(${q.id})">Enviar PDF</button>${st==="aceito"?`<button class="ghost small" onclick="contractsPage(${q.id})">Contrato</button><button class="ghost small" onclick="reopenQuote(${q.id})">Reabrir</button>`:st==="recusado"?`<button class="ghost small" onclick="reopenQuote(${q.id})">Reabrir</button>`:`<button class="small" onclick="acceptQuote(${q.id})">Marcar como aceito</button><button class="danger small" onclick="rejectQuote(${q.id})">Recusado</button>`}<button class="danger small" onclick="delQuote(${q.id})">Excluir</button></div></td></tr>`}).join("");
+ $("#content").innerHTML=`<div class="bar"><div><h2>Orçamentos</h2><span class="muted">Crie, acompanhe, aceite ou recuse propostas. A validade de 15 dias é calculada automaticamente.</span></div><button onclick="quoteModal()">+ Novo orçamento</button></div><div class="tablebox"><table class="table"><tr><th>Nº</th><th>Cliente</th><th>Evento / Data</th><th>Valor final</th><th>Ações</th></tr>${rows||'<tr><td colspan="5" class="empty">Nenhum orçamento.</td></tr>'}</table></div>`
+}
 function quoteModal(id){
  let old=id&&db.quotes.find(q=>q.id===id),map={};(old?.items||[]).forEach(i=>map[i.productId]=i);let om={};(old?.optionals||[]).forEach(i=>om[i.id]=i);
  let groupedProducts={};db.products.forEach(p=>{const cat=(p.category||"Geral").trim()||"Geral";(groupedProducts[cat]??=[]).push(p)});
@@ -217,19 +272,14 @@ function saveQuote(id){
  let clientName=$("#qclient").value.trim();if(!clientName)return alert("Informe o nome do cliente/contratante.");let items=[],optionals=[];
  $$(".qline").forEach(l=>{let p=l.querySelector("[data-p]"),o=l.querySelector("[data-o]");if(p&&p.checked)items.push({productId:Number(p.dataset.p),name:l.querySelector('.qname').childNodes[0].textContent.trim(),category:l.querySelector('.qname small')?.textContent.replace(/^Setor:\s*/i,"").split(" •")[0]||"Geral",qty:Number(l.querySelector(".qq").value||1),value:Number(l.querySelector(".qv").value||0)});if(o&&o.checked)optionals.push({id:Number(o.dataset.o),name:l.querySelector('.qname').childNodes[0].textContent.replace(/^⭐\s*/,"").trim(),qty:Number(l.querySelector(".oq").value||1),value:Number(l.querySelector(".ov").value||0)});});
  if(!items.length&&!optionals.length)return alert("Selecione um equipamento ou opcional.");
- let old=id&&db.quotes.find(q=>q.id===id),q={id:id||Date.now(),number:old?.number||"ORC-"+String(db.quotes.length+1).padStart(5,"0"),clientName,clientCpf:$("#qcpf").value.trim(),clientPhone:$("#qphone").value.trim(),clientEmail:$("#qemail").value.trim(),clientAddress:$("#qaddress").value.trim(),date:old?.date||new Date().toLocaleDateString("pt-BR"),eventName:$("#qeventname").value.trim(),eventDate:$("#qevent").value,eventTime:$("#qtime").value,cerimonialista:$("#qcer").value.trim(),eventLocal:$("#qlocal").value.trim(),eventCity:$("#qcity").value.trim(),items,optionals,total:Number($("#qt").value||0),optionalTotal:optionals.reduce((a,i)=>a+Number(i.qty||0)*Number(i.value||0),0),showOptionals:Boolean($("#qshowopt")?.checked),notes:$("#qo").value};
+ let old=id&&db.quotes.find(q=>q.id===id),q={id:id||Date.now(),number:old?.number||"ORC-"+String(db.quotes.length+1).padStart(5,"0"),clientName,clientCpf:$("#qcpf").value.trim(),clientPhone:$("#qphone").value.trim(),clientEmail:$("#qemail").value.trim(),clientAddress:$("#qaddress").value.trim(),date:old?.date||new Date().toLocaleDateString("pt-BR"),issueDate:old?.issueDate||(parseBRDate(old?.date||"")||new Date()).toISOString(),status:old?.status||"aberto",accepted:old?.accepted||false,expiryAlertSent:old?.expiryAlertSent||"",eventName:$("#qeventname").value.trim(),eventDate:$("#qevent").value,eventTime:$("#qtime").value,cerimonialista:$("#qcer").value.trim(),eventLocal:$("#qlocal").value.trim(),eventCity:$("#qcity").value.trim(),items,optionals,total:Number($("#qt").value||0),optionalTotal:optionals.reduce((a,i)=>a+Number(i.qty||0)*Number(i.value||0),0),showOptionals:Boolean($("#qshowopt")?.checked),notes:$("#qo").value};
  if(id)db.quotes=db.quotes.map(x=>x.id===id?q:x);else db.quotes.unshift(q);
  syncQuoteChecklist(q);
  save();closeModal();quotes();pdf(q.id)
 }
-function acceptQuote(id){
-  const q=db.quotes.find(x=>Number(x.id)===Number(id));
-  if(!q)return;
-  if(!confirm(`Confirmar que o cliente ${q.clientName||""} aceitou o orçamento ${q.number||""}?`))return;
-  q.accepted=true;q.acceptedAt=new Date().toLocaleString("pt-BR");q.acceptedBy="Administrador";
-  save();quotes();
-}
-function reopenQuote(id){const q=db.quotes.find(x=>Number(x.id)===Number(id));if(!q)return;q.accepted=false;q.acceptedAt="";save();quotes()}
+function acceptQuote(id){const q=db.quotes.find(x=>Number(x.id)===Number(id));if(!q)return;if(!confirm(`Confirmar que o cliente ${q.clientName||""} aceitou o orçamento ${q.number||""}?`))return;q.accepted=true;q.status="aceito";q.acceptedAt=new Date().toLocaleString("pt-BR");q.acceptedBy="Administrador";q.rejectedAt="";save();quotes()}
+function rejectQuote(id){const q=db.quotes.find(x=>Number(x.id)===Number(id));if(!q)return;if(!confirm(`Marcar o orçamento ${q.number||""} como recusado pelo cliente?`))return;q.accepted=false;q.status="recusado";q.rejectedAt=new Date().toLocaleString("pt-BR");q.acceptedAt="";save();quotes()}
+function reopenQuote(id){const q=db.quotes.find(x=>Number(x.id)===Number(id));if(!q)return;q.accepted=false;q.status="aberto";q.acceptedAt="";q.rejectedAt="";save();quotes()}
 function delQuote(id){if(confirm("Excluir este orçamento?")){db.quotes=db.quotes.filter(x=>x.id!==id);save();quotes()}}
 function pdfEscape(s){
   const map={
@@ -567,6 +617,8 @@ function delReminder(id){if(confirm("Excluir lembrete?")){db.reminders=db.remind
 async function requestReminderPermission(){if(!("Notification" in window))return alert("Navegador sem suporte a notificações.");let p=Notification.permission==="granted"?"granted":await Notification.requestPermission();alert(p==="granted"?"Notificações ativadas.":"Permissão não concedida.")}
 function checkReminders(){let now=Date.now(),changed=false;(db.reminders||[]).forEach(r=>{if(r.active===false)return;if(!r.nextAt){r.nextAt=now+Number(r.intervalMinutes||60)*60000;changed=true}if(r.nextAt<=now){if("Notification" in window&&Notification.permission==="granted")new Notification(r.title||"Impacto Pro",{body:r.message||""});else alert((r.title||"Lembrete")+"\n\n"+(r.message||""));r.nextAt=now+Number(r.intervalMinutes||60)*60000;changed=true}});if(changed)save()}
 setInterval(checkReminders,15000);
+setInterval(checkQuoteExpiries,60000);
+setTimeout(checkQuoteExpiries,2000);
 function history(){$("#content").innerHTML=`<div class="cards"><div class="card"><span class="card-label">ORÇAMENTOS</span><b>${db.quotes.length}</b></div><div class="card"><span class="card-label">TOTAL EM ORÇAMENTOS</span><b>${money(db.quotes.reduce((a,q)=>a+Number(q.total||0),0))}</b></div></div><div class="panel welcome"><h3>Histórico local</h3><p class="muted">Os registros ficam armazenados neste aparelho para funcionamento offline.</p></div>`}
 function modal(h){let d=document.createElement("div");d.className="modal";d.id="modal";d.innerHTML=`<div class="modalbox">${h}</div>`;document.body.appendChild(d)}function closeModal(){$("#modal")?.remove()}
 function downloadSystem(){modal(`<div class="download-head"><img src="./assets/impacto-pro-app-icon-512.png" alt="Impacto Pro"><div><h3>Instalar Impacto Pro</h3><p class="muted">O aplicativo usa a identidade visual oficial e pode funcionar offline.</p></div></div><div class="download-options"><div class="download-card"><h4>Android</h4><p class="muted">Instale como aplicativo pelo Chrome.</p><button onclick="installAndroid()">Instalar aplicativo</button></div><div class="download-card"><h4>Windows</h4><p class="muted">Abra no Edge/Chrome e escolha instalar aplicativo.</p><button onclick="installAndroid()">Instalar no PC</button></div><div class="download-card"><h4>Mac</h4><p class="muted">No Safari/Chrome, adicione o aplicativo à tela inicial/Apps.</p><button onclick="installAndroid()">Instalar no Mac</button></div></div><br><button class="ghost" onclick="closeModal()">Fechar</button>`)}

@@ -148,3 +148,12 @@ button{min-height:42px}
 .app-credit b{color:#9fc2d8}
 .contract-client-grid{margin-top:10px}
 @media(max-width:700px){.app-credit{font-size:10px}.contract-client-grid{grid-template-columns:1fr}}
+
+/* V45 — agenda, validade automática e aviso de vencimento */
+.agenda-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:16px}
+.agenda-day{min-height:125px;border:1px solid var(--line);border-radius:10px;background:var(--panel,#fff);padding:9px;overflow:hidden}
+.agenda-day.today{outline:2px solid #0b88c7}
+.agenda-day-head{display:flex;justify-content:space-between;gap:6px;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:6px;font-size:11px}
+.agenda-day-head span{font-size:9px;color:#6f8798;text-align:right}.agenda-quote{font-size:10px;border:1px solid #dbe2e8;border-radius:7px;padding:6px;margin-top:5px;background:#f8fafb}.agenda-quote span{display:block;color:#667580;margin-top:3px}.agenda-empty{font-size:10px;text-align:center;padding:10px 2px}.agenda-alert{border-left:4px solid #d88a00}.impacto-update-box{max-width:560px}.impacto-update-box button{white-space:nowrap}
+@media(max-width:900px){.agenda-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:600px){.agenda-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.agenda-day{min-height:110px}}
