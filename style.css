@@ -66,3 +66,79 @@ section#content{padding:26px;max-width:1450px}.bar{display:flex;justify-content:
 
 .impacto-reminder-toast{position:fixed;right:18px;bottom:18px;z-index:100000;width:min(380px,calc(100vw - 36px));padding:16px;border-radius:15px;background:#081019;color:#fff;border:1px solid rgba(0,220,255,.35);box-shadow:0 18px 50px rgba(0,0,0,.45)}
 .impacto-reminder-toast b{display:block;font-size:15px;margin-bottom:6px}.impacto-reminder-toast p{margin:0 0 12px;font-size:13px;line-height:1.4}.impacto-reminder-toast button{border:0;border-radius:9px;padding:8px 13px;font-weight:800;cursor:pointer}
+
+/* Checklist por setores */
+.checklist-sector{margin-top:14px}
+.checklist-sector-title{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;border:1px solid #d9e0e8;border-bottom:0;border-radius:10px 10px 0 0;background:#f4f7fa;color:#17212b}
+.checklist-sector .tablebox{border-radius:0 0 10px 10px}
+.checklist-sector .checklist-table{margin:0}
+/* V42 — contratos, aceite e assinatura */
+.contract-upload{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.contract-upload input{flex:1;min-width:240px}.contract-template{width:100%;min-height:420px;box-sizing:border-box;padding:14px;border-radius:10px;border:1px solid #29475b;background:#07111a;color:#fff;font-family:monospace;line-height:1.5}.contract-placeholders{margin:10px 0 14px;font-size:11px;line-height:1.6}.contract-actions{display:flex;gap:10px;flex-wrap:wrap}.signature-canvas{width:100%;max-width:760px;height:auto;background:#fff;border:1px solid #aab6c0;border-radius:10px;touch-action:none;display:block;margin:12px 0}.contract-upload .status{margin-left:5px}
+@media(max-width:700px){.contract-template{min-height:360px}.contract-upload{align-items:stretch}.contract-upload input,.contract-upload button{width:100%}}
+
+/* V43 — responsividade completa para tablets Android e iPad */
+html{width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{width:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{touch-action:manipulation}
+button{min-height:42px}
+
+@media (min-width:769px) and (max-width:1180px){
+  aside{position:sticky;top:0;left:auto;bottom:auto;width:100%;height:auto;min-height:0;padding:12px 16px;border-right:0;border-bottom:1px solid var(--line);box-shadow:0 8px 28px #0006;z-index:20}
+  .brand-side{display:flex;align-items:center;gap:16px;padding:0 0 10px;margin:0 0 10px}
+  .sidelogo{width:190px;height:52px;flex:0 0 auto}
+  .brand-caption{text-align:left;margin:0}
+  nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  nav button{min-height:44px;padding:10px 12px;font-size:12px;white-space:normal}
+  .sidebar-footer{display:flex;align-items:center;gap:10px;margin-top:10px}
+  .sidebar-status{flex:1}
+  .logout{width:auto;min-width:100px}
+  main{margin-left:0;min-height:calc(100vh - 160px)}
+  header{position:sticky;top:0;z-index:15;height:auto;min-height:76px;padding:13px 20px}
+  section#content{padding:20px;max-width:none}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-panel{flex-direction:column;align-items:stretch}
+  .connection-card{width:100%;min-width:0}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .modal{padding:24px}
+  .modalbox{width:min(900px,96vw);max-height:88vh}
+  .download-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tablebox{-webkit-overflow-scrolling:touch}
+}
+
+@media (min-width:600px) and (max-width:1180px){
+  .qline{grid-template-columns:32px minmax(160px,1fr) 76px 100px 34px;gap:8px}
+  .qname{min-width:0}
+  .qline .qv,.qline .ov{width:100px!important}
+  .qty-control .qq,.qty-control .oq{width:62px!important}
+}
+
+@media (max-width:768px){
+  aside{padding-top:max(10px,env(safe-area-inset-top));}
+  main{width:100%;}
+  header{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right));}
+  section#content{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));}
+  .tablebox{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .table{min-width:640px}
+  .modal{padding:10px}
+  .modalbox{max-height:94vh;border-radius:14px;padding:14px}
+  .actions button{min-height:40px}
+}
+
+@media (orientation:landscape) and (max-height:700px){
+  aside{padding-top:8px;padding-bottom:8px}
+  .brand-side{padding-bottom:7px;margin-bottom:7px}
+  .sidelogo{height:42px}
+  nav{gap:5px}
+  nav button{min-height:38px;padding:7px 10px}
+  .sidebar-footer{margin-top:7px}
+  header{min-height:64px;padding-top:9px;padding-bottom:9px}
+  .hero-panel{padding:16px}
+  .modalbox{max-height:92vh}
+}
+
+/* iPad / iOS safe areas and standalone mode */
+@supports (-webkit-touch-callout:none){
+  body{min-height:100svh}
+  #login{min-height:100svh;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+  .modal{padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom));}
+}

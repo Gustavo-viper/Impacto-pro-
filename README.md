@@ -1,9 +1,9 @@
-# Impacto Pro Orçamentos — V40
+# Impacto Pro Orçamentos — V41
 
 - Botão **Enviar PDF** do preview agora compartilha o arquivo diretamente pelo Web Share API no iPhone/iPad quando suportado.
 - O PDF é preparado antes do clique, preservando a ativação do usuário exigida pelo Safari/iOS.
 - Em navegadores sem compartilhamento de arquivos, o PDF é baixado e o WhatsApp é aberto com a mensagem pronta para anexar o arquivo.
-- Versão de build: 40.0.
+- Versão de build: 41.0.
 
 - PDF com formatação de documento A4.
 - Títulos 16 pt e texto 12 pt.
@@ -105,3 +105,14 @@ Correção da aba Opcionais para sincronizar todos os itens do Estoque e correç
 - Ao cadastrar/editar equipamento, basta selecionar o setor em uma lista.
 - Setor selecionado é usado automaticamente nos orçamentos e PDFs.
 - Equipamentos com categorias antigas não padronizadas são migrados para "Outros".
+
+
+## V43 — Responsividade para tablets
+- Layout adaptado para iPad e tablets Android em orientação retrato e paisagem.
+- Navegação reorganizada para telas intermediárias, sem sidebar fixa ocupando a tela.
+- Áreas de tabelas com rolagem horizontal por toque quando necessário.
+- Botões e controles com alvos de toque maiores.
+- Suporte a safe-area do iOS/iPadOS.
+- Manifesto PWA com orientação `any` para permitir retrato e paisagem.
+- Metatags específicas para instalação como app no iPad/iPhone.
+- Versão atualizada para 43.0.

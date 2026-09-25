@@ -7,7 +7,7 @@
   "display": "standalone",
   "background_color": "#050a10",
   "theme_color": "#050a10",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "icons": [
     {
       "src": "assets/impacto-pro-app-icon-192.png",
