@@ -142,3 +142,9 @@ button{min-height:42px}
   #login{min-height:100svh;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
   .modal{padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom));}
 }
+
+/* V44 — crédito da Forge Studios e formulário manual de contrato */
+.app-credit{padding:7px 4px 10px;color:#6f8798;font-size:10px;text-align:center;letter-spacing:.2px}
+.app-credit b{color:#9fc2d8}
+.contract-client-grid{margin-top:10px}
+@media(max-width:700px){.app-credit{font-size:10px}.contract-client-grid{grid-template-columns:1fr}}
