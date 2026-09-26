@@ -1,9 +1,9 @@
-const VERSION="51.0";
+const VERSION="52.0";
 const CACHE=`impacto-pro-v${VERSION}`;
 const ASSETS=[
   "./","./index.html","./style.css","./app.js","./manifest.json","./version.json",
   "./assets/impacto-pro-logo-transparent.png","./assets/impacto-pro-logo.jpeg","./assets/impacto-pro-logo-original.png","./assets/impacto-pro-marca-dagua-a4.jpg",
-  "./assets/impacto-pro-app-icon.jpeg","./assets/impacto-pro-app-icon-192.png","./assets/impacto-pro-app-icon-512.png"
+  "./assets/impacto-pro-app-icon.jpeg","./assets/impacto-pro-app-icon-192.png","./assets/impacto-pro-app-icon-512.png","./assets/contract/page-1.jpg","./assets/contract/page-2.jpg","./assets/contract/page-3.jpg","./assets/contract/page-4.jpg","./assets/contract/page-5.jpg"
 ];
 
 self.addEventListener("install",event=>{

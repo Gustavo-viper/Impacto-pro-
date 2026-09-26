@@ -42,7 +42,7 @@ async function ensureSchema() {
 app.get('/api/health', async (req, res) => {
   try {
     await ensureSchema();
-    res.json({ ok: true, database: 'neon', version: '51.0' });
+    res.json({ ok: true, database: 'neon', version: '52.0' });
   } catch (e) {
     res.status(500).json({ ok: false, error: 'Banco Neon indisponível ou não configurado.' });
   }
@@ -88,4 +88,4 @@ app.post('/api', async (req, res) => {
 app.use(express.static(path.join(__dirname)));
 app.use((req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-app.listen(PORT, () => console.log(`Impacto Pro V51 rodando na porta ${PORT}`));
+app.listen(PORT, () => console.log(`Impacto Pro V52 rodando na porta ${PORT}`));

@@ -167,3 +167,8 @@ button{min-height:42px}
 
 /* V48 - tablet/mobile touch and Android sector selector */
 .sector-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.sector-choice{min-height:44px;padding:10px 12px;border:1px solid #53606b;border-radius:9px;background:#1b2229;color:#fff;text-align:left;cursor:pointer}.sector-choice.selected{border-color:#0b88c7;box-shadow:0 0 0 2px #0b88c733;background:#12364a}.rent-info-input{min-width:130px}.check-big{width:22px;height:22px;accent-color:#0b88c7}@media(max-width:900px){.sector-choices{grid-template-columns:1fr}.tablebox{overflow-x:auto;-webkit-overflow-scrolling:touch}.table{min-width:760px}.actions button,.bar button{min-height:44px}}@media(min-width:901px) and (max-width:1200px){.sector-choices{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* V52 - setor em barra de seleção e editor de contrato */
+.sector-select{width:100%;padding:13px 14px!important;background:#050b11!important;color:#fff!important;border:1px solid #2c5872!important;border-radius:10px!important;font-size:15px!important;min-height:46px}
+.contract-editor-note{border:1px solid #24506a;background:#08131d;border-radius:10px;padding:12px}
+@media(max-width:700px){.sector-select{font-size:16px!important;min-height:50px}.field input,.field select,.field textarea{font-size:16px}}

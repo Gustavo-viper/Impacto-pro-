@@ -37,3 +37,12 @@ A versão V51 entrega a integração técnica pronta, mas a `DATABASE_URL` preci
 - Verificação automática do estado remoto a cada 30 segundos enquanto o app estiver aberto.
 - Service Worker/cache atualizado para V51.
 - DATABASE_URL continua somente no servidor.
+
+
+## V52
+- Contrato oficial de 5 páginas integrado a partir do PDF enviado pelo usuário.
+- Campos XXXXXX editáveis dentro do app e pré-preenchidos com dados do orçamento quando disponíveis.
+- Discriminação de setores manual e forma de pagamento editável.
+- Setor do estoque em barra `<select>` para Android/iPad.
+- Campos de data/hora do orçamento e demais telas com entrada manual compatível com Android.
+- Opção de instrução para adicionar à Tela de Início em iPhone/iPad.
