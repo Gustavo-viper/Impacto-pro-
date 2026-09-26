@@ -1,4 +1,4 @@
-const VERSION="59.0";
+const VERSION="60.0";
 const CACHE=`impacto-pro-v${VERSION}`;
 const ASSETS=[
   "./","./index.html","./style.css","./app.js","./manifest.json","./version.json",

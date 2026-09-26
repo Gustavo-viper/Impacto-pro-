@@ -19,3 +19,10 @@ V56: link público para dados do cliente, formulário online e importação auto
 ## V59
 - Preenchimento automático de tipo, data e hora do evento recebido pelo link do cliente.
 - Contrato original preservado como fundo, texto e cores; campos do contrato editáveis manualmente.
+
+
+## V60 — Correção visual do contrato
+- Campos sobrepostos agora usam fundo opaco na mesma tonalidade do documento original, evitando texto duplicado por transparência.
+- Campos da área azul da página 1 preservam o fundo azul-claro original.
+- Data do evento, data final, datas de pagamento e data do documento foram reforçadas para edição manual em formato DD/MM/AAAA no celular.
+- Contrato permanece com as 5 páginas originais como fundo.
