@@ -27,7 +27,7 @@ function pdfHeaderLogoTransparent(src){
 
 /* AUTO_UPDATE_V38 — atualização automática + aviso flutuante */
 (function(){
-  const BUILD_VERSION="49.0";
+  const BUILD_VERSION="51.0";
   const BUILD_KEY="impacto-pro-installed-version";
   const VERSION_URL="./version.json?v="+encodeURIComponent(BUILD_VERSION);
   let initialController=!!navigator.serviceWorker?.controller;
@@ -141,7 +141,7 @@ if(!Array.isArray(db.quotes))db.quotes=[];
 if(!Array.isArray(db.clients))db.clients=[];
 if(!Array.isArray(db.optionals))db.optionals=[];if(!Array.isArray(db.reminders))db.reminders=[];if(!Array.isArray(db.contracts))db.contracts=[];if(db.contractTemplate===undefined)db.contractTemplate=null;
 if(!db.settings||typeof db.settings!=="object")db.settings={showOptionalTotal:false};
-if(db.settings.apiUrl===undefined)db.settings.apiUrl="";
+if(db.settings.apiUrl===undefined)db.settings.apiUrl="/api";
 if(db.settings.apiToken===undefined)db.settings.apiToken="";
 if(!db.meta||typeof db.meta!=="object")db.meta={updatedAt:0};
 if(db.settings.showOptionalTotal===undefined)db.settings.showOptionalTotal=false;
@@ -149,11 +149,16 @@ if(db.settings.showOptionalTotal===undefined)db.settings.showOptionalTotal=false
 function formatDateBR(v){if(!v)return "";const d=new Date(String(v)+"T00:00:00");return isNaN(d)?String(v):d.toLocaleDateString("pt-BR")}
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],money=v=>Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"}),esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 let remoteSyncTimer=null;
-function save(){db.meta=db.meta||{};db.meta.updatedAt=Date.now();localStorage.setItem(KEY,JSON.stringify(db));updateStorageState();if(db.settings?.apiUrl){clearTimeout(remoteSyncTimer);remoteSyncTimer=setTimeout(pushRemoteData,500)}}
-async function pushRemoteData(){const url=String(db.settings?.apiUrl||"").trim();if(!url)return;try{await fetch(url.replace(/\/$/,"")+"?action=save",{method:"POST",headers:{"Content-Type":"application/json","X-Impacto-Token":String(db.settings?.apiToken||"")},body:JSON.stringify({data:db,updatedAt:db.meta?.updatedAt||Date.now()})});}catch(e){console.warn("Sincronização remota indisponível",e)}}
-async function loadRemoteData(){const url=String(db.settings?.apiUrl||"").trim();if(!url)return false;try{const r=await fetch(url.replace(/\/$/,"")+"?action=load",{cache:"no-store",headers:{"X-Impacto-Token":String(db.settings?.apiToken||"")}});if(!r.ok)return false;const j=await r.json();if(j?.data&&Number(j.updatedAt||0)>Number(db.meta?.updatedAt||0)){db=j.data;localStorage.setItem(KEY,JSON.stringify(db));updateStorageState();return true}return false}catch(e){console.warn("Banco remoto indisponível",e);return false}}
+let remotePullTimer=null;
+let remoteBusy=false;
+function persistLocal(){localStorage.setItem(KEY,JSON.stringify(db));updateStorageState();}
+function save(){db.meta=db.meta||{};db.meta.updatedAt=Date.now();persistLocal();scheduleRemotePush();}
+function scheduleRemotePush(){const url=String(db.settings?.apiUrl||"").trim();if(!url)return;clearTimeout(remoteSyncTimer);remoteSyncTimer=setTimeout(()=>pushRemoteData(),700)}
+async function pushRemoteData(){const url=String(db.settings?.apiUrl||"").trim();if(!url||remoteBusy)return false;remoteBusy=true;try{const localUpdated=Number(db.meta?.updatedAt||Date.now());const r=await fetch(url.replace(/\/$/,"")+"?action=save",{method:"POST",headers:{"Content-Type":"application/json","X-Impacto-Token":String(db.settings?.apiToken||"")},body:JSON.stringify({data:db,updatedAt:localUpdated})});if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();if(j?.ignored&&Number(j.updatedAt||0)>localUpdated){await loadRemoteData(true);}else if(j?.updatedAt){db.meta=db.meta||{};db.meta.updatedAt=Number(j.updatedAt);persistLocal();}return true}catch(e){console.warn("Sincronização remota indisponível",e);return false}finally{remoteBusy=false}}
+async function loadRemoteData(force=false){const url=String(db.settings?.apiUrl||"").trim();if(!url||remoteBusy)return false;remoteBusy=true;try{const r=await fetch(url.replace(/\/$/,"")+"?action=load",{cache:"no-store",headers:{"X-Impacto-Token":String(db.settings?.apiToken||"")}});if(!r.ok)throw new Error("HTTP "+r.status);const j=await r.json();const remoteAt=Number(j.updatedAt||0);const localAt=Number(db.meta?.updatedAt||0);if(j?.data&&((remoteAt>localAt)||force)){db=j.data;db.meta=db.meta||{};db.meta.updatedAt=remoteAt;persistLocal();return true}return false}catch(e){console.warn("Banco remoto indisponível",e);return false}finally{remoteBusy=false}}
+function startRemoteSync(){clearInterval(remotePullTimer);const url=String(db.settings?.apiUrl||"").trim();if(!url)return;remotePullTimer=setInterval(()=>loadRemoteData(false),30000);loadRemoteData(false)}
 function login(){if($("#u").value==="admin"&&$("#pw").value==="1234"){localStorage.setItem(SESSION_KEY,String(Date.now()+SESSION_MS));showApp()}else alert("Usuário ou senha inválidos.")}
-async function showApp(){$("#login").classList.add("hidden");$("#app").classList.remove("hidden");await loadRemoteData();syncStockToOptionals();save();page("dash");updateNetworkStatus()}
+async function showApp(){$("#login").classList.add("hidden");$("#app").classList.remove("hidden");const pulled=await loadRemoteData(false);if(!pulled) {syncStockToOptionals();persistLocal();scheduleRemotePush();}else {syncStockToOptionals();save();}startRemoteSync();page("dash");updateNetworkStatus()}
 function checkSession(){const exp=Number(localStorage.getItem(SESSION_KEY)||0);if(exp>Date.now()){showApp();return true}localStorage.removeItem(SESSION_KEY);return false}
 function logout(){localStorage.removeItem(SESSION_KEY);location.reload()}
 function updateNetworkStatus(){const online=navigator.onLine;const n=$("#net");if(n){n.textContent=online?"● Online":"● Offline";n.className=online?"net-online":"net-offline"}const b=$("#mode-badge");if(b)b.textContent=online?"Conectado à internet":"Modo offline — dados salvos neste aparelho"}
@@ -170,7 +175,7 @@ async function page(p){
  try{views[p]()}catch(e){console.error(e);$("#content").innerHTML=`<div class="panel"><h2>Erro ao abrir ${esc(t[p])}</h2><p class="muted">${esc(e.message||e)}</p></div>`}
 }
 function openSettingsPage(){
-  db.settings=db.settings||{showOptionalTotal:false,apiUrl:""};
+  db.settings=db.settings||{showOptionalTotal:false,apiUrl:"/api"};
   const show=Boolean(db.settings.showOptionalTotal);
   const api=String(db.settings.apiUrl||"");
   const token=String(db.settings.apiToken||"");
@@ -182,7 +187,7 @@ function openSettingsPage(){
   <div class="panel"><h3>Banco de dados central</h3><p class="muted">Configure a URL da API do banco. Depois disso, os dados salvos serão sincronizados automaticamente e poderão ser carregados em outro computador, tablet ou celular.</p><div class="field"><label>URL da API de sincronização</label><input id="apiUrl" value="${esc(api)}" placeholder="https://seu-dominio.com.br/api/api.php"></div><div class="field" style="margin-top:10px"><label>Chave de sincronização</label><input id="apiToken" type="password" value="${esc(token)}" placeholder="Chave definida no config.php"></div><br><button onclick="saveApiSettings()">Salvar e sincronizar</button> <button class="ghost" onclick="pullRemoteNow()">Puxar dados agora</button><p class="muted" style="margin-top:10px">Se estiver vazio, o aplicativo continua funcionando 100% offline/local.</p></div>`;
 }
 function saveSettings(){db.settings.showOptionalTotal=Boolean($("#showOptionalTotal")?.checked);save();openSettingsPage()}
-function saveApiSettings(){db.settings.apiUrl=$("#apiUrl")?.value.trim()||"";db.settings.apiToken=$("#apiToken")?.value.trim()||"";save();if(db.settings.apiUrl)pushRemoteData();openSettingsPage()}
+async function saveApiSettings(){db.settings.apiUrl=$("#apiUrl")?.value.trim()||"";db.settings.apiToken=$("#apiToken")?.value.trim()||"";persistLocal();if(db.settings.apiUrl){await loadRemoteData(false);await pushRemoteData();startRemoteSync();}openSettingsPage()}
 async function pullRemoteNow(){const ok=await loadRemoteData();alert(ok?"Dados atualizados a partir do banco central.":"Nenhuma versão remota mais recente foi encontrada ou a API não está configurada.");page("dash")}
 function dash(){$("#content").innerHTML=`<div class="hero-panel"><div><span class="eyebrow">GESTÃO PROFISSIONAL</span><h2>Impacto Pro Orçamentos</h2><p class="muted">Crie, edite e gere seus orçamentos mesmo sem internet.</p></div><div class="connection-card"><span id="mode-badge"></span><small id="storage-state">Dados salvos automaticamente neste aparelho</small></div></div><div class="cards"><div class="card"><span class="card-label">ORÇAMENTOS</span><b>${db.quotes.length}</b></div><div class="card"><span class="card-label">ITENS EM ESTOQUE</span><b>${db.products.reduce((a,p)=>a+Number(p.qty||0),0)}</b></div><div class="card"><span class="card-label">ALUGADOS</span><b>${db.products.filter(x=>(x.status||"Disponível")==="Alugado").length}</b></div><div class="card"><span class="card-label">OPCIONAIS</span><b>${db.optionals.length}</b></div></div><div class="panel welcome"><h3>Comece por um orçamento</h3><p class="muted">Os dados ficam disponíveis offline e são mantidos no armazenamento local do aparelho. Quando a internet voltar, o indicador muda automaticamente para <b>Online</b>.</p><button onclick="quoteModal()">+ Novo orçamento</button></div>`;updateNetworkStatus();updateStorageState()}
 function syncStockToOptionals(){

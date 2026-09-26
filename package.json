@@ -1,0 +1,17 @@
+{
+  "name": "impacto-pro-orcamentos",
+  "version": "51.0.0",
+  "private": true,
+  "description": "Impacto Pro Orçamentos - aplicação web com sincronização central Neon",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "express": "^5.1.0"
+  }
+}
