@@ -597,7 +597,7 @@ function contractOverlay(text,left,top,width,height,extra=""){return `<div class
 function formatContractObject(d){const date=formatDateBR(d.eventDate)||"____/____/______",end=d.eventEndDate&&d.eventEndDate!==d.eventDate?` com término em ${formatDateBR(d.eventEndDate)}`:"";return `1.1. O presente contrato tem por objeto a prestação de serviços de Sonorização, DJ, Painel de led, Iluminação de pista e cênica para o evento de ${d.eventName||"________________"}, a ser realizado no dia ${date}, no espaço ${d.location||"________________"}, na cidade de ${d.city||"________________"}, com início às ${d.eventTime||"__:__"}${end}, ou respeitado o horário de funcionamento do local. Em caso de hora adicional será cobrado o valor de R$150,00 por hora extra.`}
 function generateContract(quoteId){
  const q=db.quotes.find(x=>Number(x.id)===Number(quoteId));
- if(!q)return;
+ if(!q)return alert("Orçamento não encontrado.");
  const d=contractData(q),pages=[];
  const contractBase=new URL('./assets/contract/',window.location.href).href;
  const page=(n,body='')=>`<section class="contract-page" style="background-image:url('${contractBase}page-${n}.jpg')">${body}</section>`;
@@ -609,20 +609,37 @@ function generateContract(quoteId){
  const pos=[[47,10.9],[47,13.8],[47,16.8],[47,19.8],[47,22.7],[48,25.6],[72,28.6]];
  const p2=`${pos.map((p,i)=>contractOverlay(d.services?.[i]||"",p[0],p[1],i===6?20:25,2.4)).join("")}${contractOverlay(d.total,27,38,28,2.5)}${contractOverlay(d.payment1,26,45,45,2.4)}${contractOverlay(d.payment1Date,71,45,18,2.4)}${contractOverlay(d.payment2,27,47.5,43,2.4)}${contractOverlay(d.payment2Date,70,47.5,20,2.4)}<div class="cf bank-box">${esc(`Titular: ${d.bankHolder1||""}\nPIX: ${d.pix||""}\n\nTitular: ${d.bankHolder2||""}\nCPF ${d.bankCpf||""}\nBanco: ${d.bankName||""}`).replace(/\n/g,"<br>")}</div>${contractOverlay(d.paymentMethod,10,53.8,78,3)}`;
  pages.push(page(2,p2));
- pages.push(page(3));
- pages.push(page(4));
+ pages.push(page(3)); pages.push(page(4));
  const sig=q.contractSignature||"";
  const p5=`${contractOverlay(`${d.documentCity||"Caxias do Sul/RS"}, ${d.documentDate||new Date().toLocaleDateString("pt-BR")}.`,33,35.2,35,3,"text-align:center;background:transparent;color:#666;")}${d.witness1?contractOverlay(d.witness1,6,51.2,30,3):""}${d.witness1Cpf?contractOverlay(`CPF: ${d.witness1Cpf}`,6,53.2,30,3):""}${d.witness2?contractOverlay(d.witness2,61,51.2,30,3):""}${d.witness2Cpf?contractOverlay(`CPF: ${d.witness2Cpf}`,61,53.2,30,3):""}${sig?`<img class="contract-sign contract-sign-right" src="${esc(sig)}">`:""}`;
  pages.push(page(5,p5));
- const w=window.open("about:blank","_blank");
- if(!w){
-   alert("O navegador bloqueou a abertura do contrato. Permita pop-ups para o Impacto Pro e tente novamente.");
-   return;
- }
- w.document.open();
- w.document.write(`<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Contrato ${esc(q.number)}</title><style>@page{size:A4;margin:0}html,body{margin:0;padding:0;background:#222;font-family:Arial,sans-serif}.tools{position:sticky;top:0;z-index:20;background:#07111a;color:#fff;padding:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.tools button{padding:10px 14px;border:0;border-radius:8px;font-weight:800}.contract-page{width:210mm;height:297mm;position:relative;background-size:100% 100%;background-repeat:no-repeat;margin:14px auto;overflow:hidden;page-break-after:always;background-color:#fff}.cf{position:absolute;box-sizing:border-box;padding:0 3px;background:rgba(255,255,247,.97);color:#555;font-size:10px;font-weight:700;line-height:1.25;overflow:hidden;z-index:2}.object-box{left:7%;top:77.4%;width:86%;min-height:14%;padding:6px;background:rgba(255,255,247,.98);font-size:10.2px;line-height:1.35}.bank-box{left:5.8%;top:54.7%;width:88%;min-height:12%;padding:5px;font-size:10px;white-space:normal}.contract-sign{position:absolute;width:29%;height:9%;object-fit:contain;z-index:3}.contract-sign-left{left:7%;top:40.5%}.contract-sign-right{left:61%;top:40.5%}@media(max-width:800px){.contract-page{margin:0 auto;width:100vw;height:141.42vw}.cf{font-size:clamp(7px,1.15vw,10px)}.tools{position:sticky;top:0}}@media print{html,body{background:#fff}.tools{display:none}.contract-page{margin:0;width:210mm;height:297mm}}</style></head><body><div class="tools"><button onclick="window.print()">Imprimir / Salvar PDF</button><button onclick="window.close()">Fechar</button></div>${pages.join("")}</body></html>`);
- w.document.close();
+ const old=document.getElementById('contractViewer'); if(old)old.remove();
+ const viewer=document.createElement('div'); viewer.id='contractViewer'; viewer.className='contract-viewer';
+ viewer.innerHTML=`<div class="contract-toolbar"><b>Contrato ${esc(q.number||"")}</b><div><button type="button" onclick="window.print()">Imprimir / Salvar PDF</button><button type="button" onclick="closeContractViewer()">Fechar</button></div></div><div class="contract-pages">${pages.join('')}</div>`;
+ document.body.appendChild(viewer);
+ document.body.classList.add('contract-open');
 }
+function closeContractViewer(){document.getElementById('contractViewer')?.remove();document.body.classList.remove('contract-open')}
+function openContract(id){
+ const c=(db.contracts||[]).find(x=>Number(x.id)===Number(id));
+ if(!c)return alert("Contrato não encontrado.");
+ const q=db.quotes.find(x=>Number(x.id)===Number(c.quoteId));
+ if(!q)return alert("O orçamento deste contrato não foi encontrado.");
+ generateContract(q.id);
+}
+function signContract(quoteId){
+ const q=db.quotes.find(x=>Number(x.id)===Number(quoteId)); if(!q)return;
+ modal(`<h3>Assinar contrato</h3><p class="muted">Desenhe sua assinatura no campo abaixo.</p><canvas id="signatureCanvas" class="signature-canvas" width="900" height="280"></canvas><br><button onclick="saveContractSignature(${q.id})">Salvar assinatura</button> <button class="ghost" onclick="clearContractSignature()">Limpar</button> <button class="ghost" onclick="closeModal()">Cancelar</button>`);
+ const c=document.getElementById('signatureCanvas'),ctx=c.getContext('2d');ctx.lineWidth=3;ctx.lineCap='round';let drawing=false;
+ const pos=e=>{const r=c.getBoundingClientRect(),t=e.touches?.[0];return {x:(t?t.clientX:e.clientX-r.left)*c.width/r.width,y:(t?t.clientY:e.clientY-r.top)*c.height/r.height}};
+ const down=e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault()};
+ const move=e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault()};
+ const up=()=>drawing=false;
+ c.addEventListener('mousedown',down);c.addEventListener('mousemove',move);window.addEventListener('mouseup',up,{once:false});c.addEventListener('touchstart',down,{passive:false});c.addEventListener('touchmove',move,{passive:false});c.addEventListener('touchend',up);
+}
+function clearContractSignature(){const c=document.getElementById('signatureCanvas');if(c)c.getContext('2d').clearRect(0,0,c.width,c.height)}
+function saveContractSignature(id){const c=document.getElementById('signatureCanvas');if(!c)return;const q=db.quotes.find(x=>Number(x.id)===Number(id));if(!q)return;q.contractSignature=c.toDataURL('image/png');q.contractSignedAt=new Date().toISOString();q.contractData=q.contractData||contractSeedFromQuote(q);db.contracts=db.contracts||[];let rec=db.contracts.find(x=>Number(x.quoteId)===Number(id));if(!rec){rec={id:Date.now(),quoteId:id,quoteNumber:q.number,createdAt:new Date().toLocaleString('pt-BR')};db.contracts.push(rec)}rec.signed=true;rec.signedAt=q.contractSignedAt;save();closeModal();contractsPage(id)}
+
 function contractDefaultTemplate(){return "Contrato oficial integrado a partir do PDF enviado."}
 function saveContractTemplate(){alert("O contrato oficial já está integrado ao aplicativo. Use Editar contrato para alterar os campos.")}
 function attachContractTemplate(){alert("O contrato oficial já está integrado ao aplicativo. Use Editar contrato para preencher os campos.")}

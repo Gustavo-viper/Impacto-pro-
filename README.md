@@ -39,7 +39,7 @@ A versão V51 entrega a integração técnica pronta, mas a `DATABASE_URL` preci
 - DATABASE_URL continua somente no servidor.
 
 
-## V52
+## V54
 - Contrato oficial de 5 páginas integrado a partir do PDF enviado pelo usuário.
 - Campos XXXXXX editáveis dentro do app e pré-preenchidos com dados do orçamento quando disponíveis.
 - Discriminação de setores manual e forma de pagamento editável.
