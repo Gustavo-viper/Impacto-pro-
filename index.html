@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07111b">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Impacto Pro">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Impacto Pro Orçamentos — gestão profissional de orçamentos, estoque e equipamentos.">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" href="./assets/impacto-pro-app-icon-512.png" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/impacto-pro-app-icon-192.png">
+  <link rel="stylesheet" href="./style.css">
+  <title>Impacto Pro Orçamentos</title>
+</head>
+<body>
+  <div id="login">
+    <div class="loginbox">
+      <img class="loginlogo" src="./assets/impacto-pro-logo-transparent.png" alt="Impacto Pro Orçamentos">
+      <span class="eyebrow">GESTÃO PROFISSIONAL</span>
+      <h1>Impacto Pro Orçamentos</h1>
+      <p class="muted">Acesso administrativo</p>
+      <input id="u" type="text" autocomplete="username" placeholder="Usuário">
+      <input id="pw" type="password" autocomplete="current-password" placeholder="Senha" onkeydown="if(event.key==='Enter')login()">
+      <button type="button" onclick="login()">Entrar</button>
+      <small>Usuário: admin &nbsp;•&nbsp; Senha: 1234</small>
+    </div>
+  </div>
+
+  <div id="app" class="hidden">
+    <aside>
+      <div class="brand-side">
+        <img class="sidelogo" src="./assets/impacto-pro-logo-transparent.png" alt="Impacto Pro">
+        <div class="brand-caption">ORÇAMENTOS & GESTÃO</div>
+      </div>
+      <nav>
+        <button data-page="dash" onclick="page('dash')">Dashboard</button>
+        <button data-page="quotes" onclick="page('quotes')">Orçamentos</button>
+        <button data-page="agenda" onclick="page('agenda')">Agenda</button>
+        <button data-page="stock" onclick="page('stock')">Estoque</button>
+        <button data-page="optionals" onclick="page('optionals')">Opcionais</button>
+        <button data-page="rent" onclick="page('rent')">Equipamentos alugados</button>
+        <button data-page="checklist" onclick="page('checklist')">Checklist</button>
+        <button data-page="finance" onclick="page('finance')">Financeiro</button>
+        <button type="button" data-page="reminders" onclick="page('reminders')">Lembretes</button>
+        <button data-page="history" onclick="page('history')">Histórico</button>
+        <button data-page="settings" onclick="page('settings')">Configurações</button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="sidebar-status"><span class="dot"></span><span id="sidebar-status-text">Sistema pronto</span></div>
+        <div class="app-credit">Desenvolvido pela <b>Forge Studios</b></div>
+        <button class="logout" onclick="location.reload()">Sair</button>
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <div>
+          <span class="eyebrow">IMPACTO PRO</span>
+          <h1 id="title">Dashboard</h1>
+        </div>
+        <div class="header-actions">
+          <span id="net" class="net-offline">● Offline</span>
+          <button class="downloadbtn" onclick="downloadSystem()">Instalar app</button>
+        </div>
+      </header>
+      <section id="content"></section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+    }
+  </script>
+</body>
+</html>

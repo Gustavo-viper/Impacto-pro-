@@ -1,0 +1,188 @@
+*{box-sizing:border-box}
+:root{--bg:#050a10;--sidebar:#08111b;--panel:#0b1723;--panel2:#0e1c29;--line:#1b3549;--accent:#18b8ee;--accent2:#6658ee;--text:#edf7ff;--muted:#8098ab;--success:#36d98b;--danger:#ef6175}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:14px Inter,Arial,sans-serif}body{background:radial-gradient(900px 500px at 72% -10%,#143e5755,transparent 65%),var(--bg)}
+button,input,select,textarea{font:inherit}button{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;transition:.18s}button:hover{filter:brightness(1.08);transform:translateY(-1px)}.hidden{display:none!important}
+#login{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 15%,#17435a,#05080d 68%)}
+.loginbox{width:min(430px,94vw);background:linear-gradient(145deg,#0d1a27,#071019);border:1px solid #24475e;border-radius:24px;padding:32px;text-align:center;box-shadow:0 30px 90px #000b}.loginlogo{width:92%;max-height:105px;object-fit:contain;background:transparent;border-radius:10px;padding:0;margin-bottom:20px}.loginbox h1{margin:8px 0;font-size:25px}.loginbox input{display:block;width:100%;padding:13px;margin:10px 0;background:#050b11;border:1px solid #29475d;color:#fff;border-radius:10px;outline:none}.loginbox input:focus,.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #18b8ee22}.loginbox button{width:100%;margin-top:5px}.loginbox small{display:block;color:#70899d;margin-top:13px}
+.eyebrow{font-size:10px;letter-spacing:2px;font-weight:900;color:var(--accent);text-transform:uppercase}
+aside{position:fixed;left:0;top:0;bottom:0;width:258px;background:linear-gradient(180deg,#091521,#050a10);border-right:1px solid var(--line);padding:20px 16px;display:flex;flex-direction:column;box-shadow:14px 0 45px #0006;z-index:10}.brand-side{padding:4px 4px 20px;border-bottom:1px solid #183246;margin-bottom:18px}.sidelogo{width:100%;height:72px;object-fit:contain;background:transparent;border-radius:9px;padding:0}.brand-caption{text-align:center;color:#58758b;font-size:9px;font-weight:900;letter-spacing:2px;margin-top:8px}
+nav{display:flex;flex-direction:column;gap:7px}nav button{width:100%;background:#0a1724;color:#bfd2df;border:1px solid #142e41;text-align:left;padding:12px 14px;font-size:13px;border-radius:10px}nav button:hover,nav button.active{background:linear-gradient(90deg,#0d2c40,#101e2c);border-color:#1b6b8e;color:#fff;box-shadow:inset 3px 0 0 var(--accent)}
+.sidebar-footer{margin-top:auto}.sidebar-status{display:flex;align-items:center;gap:8px;color:#668298;font-size:11px;padding:10px 4px}.dot{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 10px #36d98b88}.logout{width:100%;background:#121f2b;color:#9bb0be;border:1px solid #1c3446}
+main{margin-left:258px;min-height:100vh}header{height:84px;padding:15px 28px;border-bottom:1px solid var(--line);background:#07101aee;backdrop-filter:blur(14px);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}header h1{font-size:22px;margin:4px 0 0}.header-actions{display:flex;align-items:center;gap:12px}.downloadbtn{white-space:nowrap}.net-online,.net-offline{font-size:12px;font-weight:800}.net-online{color:var(--success)}.net-offline{color:#ffbd45}
+section#content{padding:26px;max-width:1450px}.bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:15px}.bar h2{margin:0 0 4px;font-size:20px}.muted{color:var(--muted)}
+.hero-panel{display:flex;justify-content:space-between;gap:20px;align-items:center;background:linear-gradient(135deg,#0e2130,#0a121c);border:1px solid #1b4258;border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 14px 45px #0004}.hero-panel h2{margin:6px 0;font-size:27px}.hero-panel p{margin:5px 0}.connection-card{min-width:270px;padding:14px;border:1px solid #1b3b51;border-radius:12px;background:#07111a;display:flex;flex-direction:column;gap:5px}.connection-card span{font-weight:800;color:#b9d5e6}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel,.tablebox{background:linear-gradient(145deg,#0c1926,#08121c);border:1px solid #19374b;border-radius:15px;padding:18px;box-shadow:0 10px 35px #0003}.card-label{display:block;color:#6d8aa0;font-size:10px;font-weight:900;letter-spacing:1.2px}.card b{display:block;margin-top:8px;font-size:28px;background:linear-gradient(90deg,#18b8ee,#8b6cff);-webkit-background-clip:text;background-clip:text;color:transparent}.welcome{margin-top:16px}.welcome h3{margin-top:0}.tablebox{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:680px}.table th,.table td{padding:12px;border-bottom:1px solid #193246;text-align:left}.table th{color:#6f899d;font-size:10px;text-transform:uppercase;letter-spacing:.7px}.actions{display:flex;gap:7px;flex-wrap:wrap}.danger{background:#8f2d3d}.ghost{background:#142738;border:1px solid #1c3a4f}.small{padding:7px 10px;font-size:12px}
+.modal{position:fixed;inset:0;background:#000b;display:grid;place-items:center;padding:18px;z-index:30;backdrop-filter:blur(5px)}.modalbox{width:min(880px,100%);max-height:92vh;overflow:auto;background:linear-gradient(145deg,#0d1a27,#071019);border:1px solid #24506a;border-radius:18px;padding:22px;box-shadow:0 30px 100px #000b}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;color:#8da6b8;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}.field input,.field textarea,.field select{width:100%;padding:11px;margin-top:6px;background:#050b11;border:1px solid #24455c;color:#fff;border-radius:9px;outline:none}.field textarea{min-height:90px}.full{grid-column:1/-1}.section-title{color:#8faec0;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin:18px 0 7px}.qitems{border:1px solid #19374b;border-radius:11px;padding:10px;background:#07111a}.qline{display:grid;grid-template-columns:28px 1fr 85px 120px 30px;gap:7px;align-items:center;margin:7px 0}.qline input{width:100%;padding:9px;background:#050b11;border:1px solid #24455c;color:#fff;border-radius:7px}.finalbox{margin-top:16px;padding:15px;border:1px solid #1597c4;border-radius:11px;background:#071a26}.finalbox label{display:block;color:#7fa5bc;font-size:11px;font-weight:900}.finalbox input{width:100%;font-size:25px;font-weight:800;padding:12px;margin-top:7px;background:#02070b;border:1px solid #18b8ee;color:#fff;border-radius:9px}.empty{text-align:center;color:#7892a8;padding:30px}
+.status{display:inline-block;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}.status.disponivel{background:#123f2a;color:#6ff0aa}.status.alugado{background:#473914;color:#ffd66b}.status.manutencao{background:#49212a;color:#ff8999}
+.download-head{display:flex;align-items:center;gap:16px}.download-head img{width:74px;height:74px;border-radius:15px;object-fit:cover;background:#000}.download-head h3{margin:0 0 5px}.download-options{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}.download-card{padding:16px;border:1px solid #23465d;border-radius:12px;background:#08131d}.download-card h4{margin:0 0 8px;font-size:15px}.download-card button{width:100%}
+@media(max-width:900px){aside{position:relative;width:100%;height:auto;bottom:auto;padding:12px}.brand-side{padding-bottom:12px;margin-bottom:12px}.sidelogo{height:58px}nav{gap:6px}nav button{text-align:left;padding:11px 12px}.sidebar-footer{margin-top:10px}main{margin-left:0}header{position:sticky}.cards{grid-template-columns:1fr 1fr}.hero-panel{align-items:flex-start;flex-direction:column}.connection-card{width:100%}}
+@media(max-width:600px){header{height:auto;min-height:78px;padding:14px 16px;gap:10px}header h1{font-size:18px}.header-actions{gap:6px;flex-wrap:wrap;justify-content:flex-end}.downloadbtn{font-size:11px;padding:8px 10px}section#content{padding:16px}.bar{align-items:flex-start;flex-direction:column}.bar>button{width:100%}.cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.full{grid-column:auto}.qline{grid-template-columns:24px 1fr 65px 82px 25px;font-size:12px}.table{min-width:650px}.download-options{grid-template-columns:1fr}.modalbox{padding:16px}.hero-panel h2{font-size:23px}}
+
+/* V10 */
+.dark-select{background:#07111a;color:#fff;border:1px solid #28485e;padding:8px;border-radius:8px;min-width:130px}.rentqty{width:82px;padding:8px;background:#07111a;color:#fff;border:1px solid #28485e;border-radius:8px}.done-text{text-decoration:line-through;opacity:.55}.mini-cards{grid-template-columns:repeat(3,1fr);margin-bottom:18px}.actions{display:flex;gap:8px;flex-wrap:wrap}.status.disponivel{background:#123b2a;color:#7ef0b4}.status.manutencao{background:#4a2d16;color:#ffd08a}@media(max-width:850px){aside{position:relative;width:100%;height:auto;min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:12px}.brand-side{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:10px}.sidelogo{width:150px;height:50px;background:transparent;padding:0}.brand-caption{display:none}nav{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}main{margin-left:0}header{position:sticky;top:0}.mini-cards{grid-template-columns:1fr}.tablebox{overflow:auto}section#content{padding:16px}.bar{align-items:flex-start;flex-direction:column}}
+
+/* V11 — seleção de estoque e opcionais no orçamento */
+.qline{align-items:center;gap:10px}
+.qname{flex:1;min-width:150px;display:flex;flex-direction:column;line-height:1.25}
+.qname small{font-size:10px;color:#7c8994;margin-top:3px}
+.qty-control{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.qty-control .qq,.qty-control .oq{width:58px!important;text-align:center}
+.qtybtn{width:32px;height:32px;padding:0!important;display:inline-flex;align-items:center;justify-content:center;font-size:18px}
+.qline .qv,.qline .ov{width:105px!important}
+.subtotalbox,.optional-total{display:flex;justify-content:space-between;align-items:center;margin:12px 0;padding:12px 14px;border:1px solid #dce4ea;border-radius:10px;background:#f7fafc;font-size:12px;font-weight:800}
+.optional-total{background:#fffaf0;border-color:#f0d9a2}
+.optional-add-title{margin-top:18px}
+.quote-help{font-size:11px;margin:-4px 0 8px}
+@media(max-width:700px){.qline{flex-wrap:wrap}.qname{min-width:calc(100% - 38px)}.qline .qv,.qline .ov{width:100px!important}.qty-control{margin-left:auto}.subtotalbox,.optional-total{font-size:11px}}
+
+/* V15 — checklist de carregamento por orçamento */
+.checklist-event{margin-bottom:18px}.checklist-event-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:12px}.checklist-event-head h3{margin:5px 0}.check-count{font-weight:900;color:#7ef0b4;background:#123b2a;border:1px solid #245e42;padding:8px 12px;border-radius:999px;white-space:nowrap}.checklist-table{min-width:0}.check-cell{width:58px;text-align:center!important}.check-big{width:22px;height:22px;accent-color:#18b8ee;cursor:pointer}.check-row.checked-row{background:#0c1d17}.check-item-name{font-size:14px}.checked-row .check-item-name{color:#7ef0b4}.checklist-event .tablebox{box-shadow:none}.checklist-event .table td,.checklist-event .table th{vertical-align:middle}@media(max-width:700px){.checklist-event-head{align-items:flex-start;flex-direction:column}.check-count{align-self:flex-start}.checklist-table{min-width:520px}}
+
+#impactoUpdateNotice{position:fixed;left:0;right:0;bottom:0;z-index:99999;display:flex;align-items:flex-end;justify-content:center;padding:18px;pointer-events:none}
+.impacto-update-box{pointer-events:auto;width:min(680px,100%);display:flex;align-items:center;gap:13px;padding:15px 16px;border:1px solid rgba(0,220,255,.42);border-radius:16px;background:rgba(8,14,22,.98);box-shadow:0 18px 50px rgba(0,0,0,.5);color:#fff;backdrop-filter:blur(12px);animation:impactoUpdateIn .28s ease-out}
+.impacto-update-icon{width:42px;height:42px;min-width:42px;display:grid;place-items:center;border-radius:50%;background:#10c878;color:#06130d;font-weight:900;font-size:22px}
+.impacto-update-copy{flex:1;min-width:0}
+.impacto-update-box strong{display:block;font-size:15px;margin-bottom:4px}
+.impacto-update-box p{margin:0;font-size:13px;line-height:1.35;opacity:.86}
+#impactoUpdateReload{margin-left:auto;border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:900;background:#12cfe9;color:#001018;white-space:nowrap}
+@keyframes impactoUpdateIn{from{transform:translateY(18px);opacity:0}to{transform:translateY(0);opacity:1}}
+@media(max-width:600px){#impactoUpdateNotice{padding:12px}.impacto-update-box{align-items:flex-start;padding:13px}.impacto-update-icon{width:36px;height:36px;min-width:36px}.impacto-update-box p{font-size:12px}#impactoUpdateReload{font-size:11px;padding:9px 10px}}
+
+/* V21 setores, locações e formulários */
+.sector-row td{background:rgba(0,210,255,.08);border-top:1px solid rgba(0,210,255,.18);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.quote-sector{margin:0 0 16px;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden}
+.quote-sector-title{padding:10px 12px;background:rgba(0,210,255,.08);font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.03em}
+.quote-sector .qline{border-radius:0;border-left:0;border-right:0}
+.rent-info-input{width:100%;min-width:150px;padding:8px 9px;border-radius:8px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.18);color:inherit}
+@media(max-width:1100px){.tablebox{overflow-x:auto}.rent-info-input{min-width:130px}}
+
+.setting-row{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:18px;border:1px solid #19374b;border-radius:14px;background:#0a1722}.setting-row p{max-width:760px;margin:7px 0 0}.setting-inline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0;padding:12px 14px;border:1px solid #19374b;border-radius:10px;background:#0a1722}.setting-inline label{font-weight:800;display:flex;gap:8px;align-items:center}.switch{position:relative;width:52px;height:30px;display:block;flex:0 0 auto}.switch input{opacity:0;width:0;height:0}.switch span{position:absolute;inset:0;background:#263b4a;border-radius:30px;cursor:pointer;transition:.2s}.switch span:before{content:"";position:absolute;width:22px;height:22px;left:4px;top:4px;background:#fff;border-radius:50%;transition:.2s}.switch input:checked+span{background:#0bbad8}.switch input:checked+span:before{transform:translateX(22px)}
+
+.reminder-help{margin-bottom:14px}
+.impacto-reminder-box{position:fixed;right:18px;bottom:18px;z-index:100000;width:min(380px,calc(100vw - 36px));padding:16px;border-radius:15px;background:rgba(8,14,22,.98);color:#fff;border:1px solid rgba(0,220,255,.35);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.impacto-reminder-box b{display:block;font-size:15px;margin-bottom:7px}
+.impacto-reminder-box p{margin:0 0 12px;line-height:1.4;font-size:13px;opacity:.9}
+.impacto-reminder-box button{border:0;border-radius:9px;padding:8px 13px;font-weight:800;cursor:pointer;background:#12cfe9;color:#001018}
+
+.impacto-reminder-toast{position:fixed;right:18px;bottom:18px;z-index:100000;width:min(380px,calc(100vw - 36px));padding:16px;border-radius:15px;background:#081019;color:#fff;border:1px solid rgba(0,220,255,.35);box-shadow:0 18px 50px rgba(0,0,0,.45)}
+.impacto-reminder-toast b{display:block;font-size:15px;margin-bottom:6px}.impacto-reminder-toast p{margin:0 0 12px;font-size:13px;line-height:1.4}.impacto-reminder-toast button{border:0;border-radius:9px;padding:8px 13px;font-weight:800;cursor:pointer}
+
+/* Checklist por setores */
+.checklist-sector{margin-top:14px}
+.checklist-sector-title{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;padding:10px 12px;border:1px solid #d9e0e8;border-bottom:0;border-radius:10px 10px 0 0;background:#f4f7fa;color:#17212b}
+.checklist-sector .tablebox{border-radius:0 0 10px 10px}
+.checklist-sector .checklist-table{margin:0}
+/* V42 — contratos, aceite e assinatura */
+.contract-upload{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.contract-upload input{flex:1;min-width:240px}.contract-template{width:100%;min-height:420px;box-sizing:border-box;padding:14px;border-radius:10px;border:1px solid #29475b;background:#07111a;color:#fff;font-family:monospace;line-height:1.5}.contract-placeholders{margin:10px 0 14px;font-size:11px;line-height:1.6}.contract-actions{display:flex;gap:10px;flex-wrap:wrap}.signature-canvas{width:100%;max-width:760px;height:auto;background:#fff;border:1px solid #aab6c0;border-radius:10px;touch-action:none;display:block;margin:12px 0}.contract-upload .status{margin-left:5px}
+@media(max-width:700px){.contract-template{min-height:360px}.contract-upload{align-items:stretch}.contract-upload input,.contract-upload button{width:100%}}
+
+/* V43 — responsividade completa para tablets Android e iPad */
+html{width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{width:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{touch-action:manipulation}
+button{min-height:42px}
+
+@media (min-width:769px) and (max-width:1180px){
+  aside{position:sticky;top:0;left:auto;bottom:auto;width:100%;height:auto;min-height:0;padding:12px 16px;border-right:0;border-bottom:1px solid var(--line);box-shadow:0 8px 28px #0006;z-index:20}
+  .brand-side{display:flex;align-items:center;gap:16px;padding:0 0 10px;margin:0 0 10px}
+  .sidelogo{width:190px;height:52px;flex:0 0 auto}
+  .brand-caption{text-align:left;margin:0}
+  nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+  nav button{min-height:44px;padding:10px 12px;font-size:12px;white-space:normal}
+  .sidebar-footer{display:flex;align-items:center;gap:10px;margin-top:10px}
+  .sidebar-status{flex:1}
+  .logout{width:auto;min-width:100px}
+  main{margin-left:0;min-height:calc(100vh - 160px)}
+  header{position:sticky;top:0;z-index:15;height:auto;min-height:76px;padding:13px 20px}
+  section#content{padding:20px;max-width:none}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero-panel{flex-direction:column;align-items:stretch}
+  .connection-card{width:100%;min-width:0}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .modal{padding:24px}
+  .modalbox{width:min(900px,96vw);max-height:88vh}
+  .download-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tablebox{-webkit-overflow-scrolling:touch}
+}
+
+@media (min-width:600px) and (max-width:1180px){
+  .qline{grid-template-columns:32px minmax(160px,1fr) 76px 100px 34px;gap:8px}
+  .qname{min-width:0}
+  .qline .qv,.qline .ov{width:100px!important}
+  .qty-control .qq,.qty-control .oq{width:62px!important}
+}
+
+@media (max-width:768px){
+  aside{padding-top:max(10px,env(safe-area-inset-top));}
+  main{width:100%;}
+  header{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right));}
+  section#content{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));}
+  .tablebox{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+  .table{min-width:640px}
+  .modal{padding:10px}
+  .modalbox{max-height:94vh;border-radius:14px;padding:14px}
+  .actions button{min-height:40px}
+}
+
+@media (orientation:landscape) and (max-height:700px){
+  aside{padding-top:8px;padding-bottom:8px}
+  .brand-side{padding-bottom:7px;margin-bottom:7px}
+  .sidelogo{height:42px}
+  nav{gap:5px}
+  nav button{min-height:38px;padding:7px 10px}
+  .sidebar-footer{margin-top:7px}
+  header{min-height:64px;padding-top:9px;padding-bottom:9px}
+  .hero-panel{padding:16px}
+  .modalbox{max-height:92vh}
+}
+
+/* iPad / iOS safe areas and standalone mode */
+@supports (-webkit-touch-callout:none){
+  body{min-height:100svh}
+  #login{min-height:100svh;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+  .modal{padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(10px,env(safe-area-inset-bottom));}
+}
+
+/* V44 — crédito da Forge Studios e formulário manual de contrato */
+.app-credit{padding:7px 4px 10px;color:#6f8798;font-size:10px;text-align:center;letter-spacing:.2px}
+.app-credit b{color:#9fc2d8}
+.contract-client-grid{margin-top:10px}
+@media(max-width:700px){.app-credit{font-size:10px}.contract-client-grid{grid-template-columns:1fr}}
+
+/* V45 — agenda, validade automática e aviso de vencimento */
+.agenda-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin-top:16px}
+.agenda-day{min-height:125px;border:1px solid var(--line);border-radius:10px;background:var(--panel,#fff);padding:9px;overflow:hidden}
+.agenda-day.today{outline:2px solid #0b88c7}
+.agenda-day-head{display:flex;justify-content:space-between;gap:6px;border-bottom:1px solid var(--line);padding-bottom:6px;margin-bottom:6px;font-size:11px}
+.agenda-day-head span{font-size:9px;color:#6f8798;text-align:right}.agenda-quote{font-size:10px;border:1px solid #dbe2e8;border-radius:7px;padding:6px;margin-top:5px;background:#f8fafb}.agenda-quote span{display:block;color:#667580;margin-top:3px}.agenda-empty{font-size:10px;text-align:center;padding:10px 2px}.agenda-alert{border-left:4px solid #d88a00}.impacto-update-box{max-width:560px}.impacto-update-box button{white-space:nowrap}
+@media(max-width:900px){.agenda-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:600px){.agenda-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.agenda-day{min-height:110px}}
+
+/* V47 - setores touch-friendly e Android/iPad */
+.sector-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.sector-choice{background:#07111a;border:1px solid #28485e;color:#dcecf5;text-align:left;font-size:13px;padding:11px 12px;min-height:44px}
+.sector-choice.selected{border-color:var(--accent);box-shadow:0 0 0 2px #18b8ee33;background:#0b2432}
+.rent-info-input{width:100%;min-width:130px;padding:8px;background:#07111a;color:#fff;border:1px solid #28485e;border-radius:8px}
+@media(max-width:600px){.sector-choices{grid-template-columns:1fr}.sector-choice{width:100%;text-align:center}.rent-info-input{min-width:145px}}
+
+/* V48 - tablet/mobile touch and Android sector selector */
+.sector-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}.sector-choice{min-height:44px;padding:10px 12px;border:1px solid #53606b;border-radius:9px;background:#1b2229;color:#fff;text-align:left;cursor:pointer}.sector-choice.selected{border-color:#0b88c7;box-shadow:0 0 0 2px #0b88c733;background:#12364a}.rent-info-input{min-width:130px}.check-big{width:22px;height:22px;accent-color:#0b88c7}@media(max-width:900px){.sector-choices{grid-template-columns:1fr}.tablebox{overflow-x:auto;-webkit-overflow-scrolling:touch}.table{min-width:760px}.actions button,.bar button{min-height:44px}}@media(min-width:901px) and (max-width:1200px){.sector-choices{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* V52 - setor em barra de seleção e editor de contrato */
+.sector-select{width:100%;padding:13px 14px!important;background:#050b11!important;color:#fff!important;border:1px solid #2c5872!important;border-radius:10px!important;font-size:15px!important;min-height:46px}
+.contract-editor-note{border:1px solid #24506a;background:#08131d;border-radius:10px;padding:12px}
+@media(max-width:700px){.sector-select{font-size:16px!important;min-height:50px}.field input,.field select,.field textarea{font-size:16px}}
+/* V54 - visualizador de contrato interno: evita bloqueio de pop-ups no Android/iOS */
+.contract-viewer{position:fixed;inset:0;z-index:99999;background:#20242a;overflow:auto;padding-top:58px}
+.contract-toolbar{position:fixed;top:0;left:0;right:0;z-index:100000;min-height:58px;background:#07111a;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;box-sizing:border-box;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+.contract-toolbar button{border:0;border-radius:8px;padding:10px 14px;font-weight:800;margin-left:6px}
+.contract-pages{padding:10px 0 30px}
+.contract-viewer .contract-page{width:210mm;height:297mm;position:relative;background-size:100% 100%;background-repeat:no-repeat;margin:12px auto;overflow:hidden;page-break-after:always;background-color:#fff}
+.contract-viewer .cf{position:absolute;box-sizing:border-box;padding:0 3px;background:#fffff3;color:#555;font-size:10px;font-weight:600;line-height:1.25;overflow:hidden;z-index:2}
+.contract-viewer .object-box{left:7%;top:77.4%;width:86%;min-height:14%;padding:6px;background:#fffff3;font-size:10px;font-weight:600;line-height:1.35;color:#666}
+.contract-viewer .bank-box{left:5.8%;top:54.7%;width:88%;min-height:12%;padding:5px;font-size:10px;font-weight:500;white-space:normal;background:#fffff3;color:#666}
+.contract-viewer .contract-sign{position:absolute;width:29%;height:9%;object-fit:contain;z-index:3}
+.contract-viewer .contract-sign-right{left:61%;top:40.5%}
+body.contract-open{overflow:hidden}
+@media(max-width:800px){.contract-viewer .contract-page{margin:0 auto;width:100vw;height:141.42vw}.contract-viewer .cf{font-size:clamp(7px,1.15vw,10px)}.contract-toolbar{flex-wrap:wrap;min-height:58px}.contract-toolbar b{font-size:12px}.contract-toolbar button{padding:8px 10px;font-size:12px}}
+@media print{body.contract-open>*:not(#contractViewer){display:none!important}.contract-viewer{position:static;overflow:visible;padding:0;background:#fff}.contract-toolbar{display:none!important}.contract-pages{padding:0}.contract-viewer .contract-page{margin:0;width:210mm;height:297mm}}
