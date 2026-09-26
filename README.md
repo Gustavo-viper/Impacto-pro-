@@ -14,3 +14,8 @@ Correção do módulo de Contratos.
 Depois de publicar a V55, atualize/recarregue o aplicativo para que o Service Worker V55 seja instalado.
 
 V56: link público para dados do cliente, formulário online e importação automática para orçamento.
+
+
+## V59
+- Preenchimento automático de tipo, data e hora do evento recebido pelo link do cliente.
+- Contrato original preservado como fundo, texto e cores; campos do contrato editáveis manualmente.
